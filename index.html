@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>porfolio</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <!-- Ressources nécessaires à CodePen -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="ig"></div>
+  <div class="i-eyebrow">Portfolio · Géomaticienne</div>
+  <h1 class="i-name">Diariétou<br>Demba</h1>
+  <div class="i-role">Géomaticienne</div>
+  <div class="i-loc">Toute la France · Ouverte aux opportunités</div>
+  <div class="i-intro-hint">Parcourez le menu · survolez les points · cliquez pour voir les détails</div>
+  <button class="i-btn" id="i-btn" onclick="dispatch()">Accéder au portfolio →</button>
+</div>
+
+<!-- MAP -->
+<div id="map"></div>
+<div id="map-tint"></div>
+<div id="tac-grid"></div>
+<div id="frame-left"></div>
+<div id="frame-right"></div>
+<div id="frame-top"></div>
+<div id="frame-bottom"></div>
+
+<!-- MOBILE TOGGLE -->
+<div id="mob-toggle" onclick="document.getElementById('lpanel').classList.toggle('mob')">☰</div>
+
+<!-- TOPBAR / FIL D'ARIANE -->
+<div id="topbar">
+  <div class="crumb" id="crumb">
+    <span>Portfolio</span><span class="sep">/</span><b id="crumb-current">Accueil</b>
+  </div>
+  <div class="tb-right">
+    <span id="coords-live">—</span>
+    <div style="display:flex;gap:0;">
+      <button class="zoom-btn" onclick="map.zoomIn()">+</button>
+      <button class="zoom-btn" onclick="map.zoomOut()">−</button>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL GAUCHE -->
+<div id="lpanel">
+  <div class="lp-id">
+    <div class="lp-name">Diariétou Demba</div>
+    <div class="lp-role">Géomaticienne
+    </div>
+  </div>
+
+  <!-- 1 · EXPÉRIENCES PRO -->
+  <div class="lp-sec"><span class="num">1</span> Expériences professionnelles</div>
+  <div class="lp-item" onclick="show('sdis',this)">
+    <div class="lp-dot" style="background:var(--red)"></div>
+    <div><div class="lp-label">Stage — SDIS 49</div><div class="lp-sub">Géomaticienne · Angers · 2026</div></div>
+  </div>
+  <div class="lp-item" onclick="show('sebikotane',this)">
+    <div class="lp-dot" style="background:var(--red)"></div>
+    <div><div class="lp-label">Stage — Mairie de Sébikhotane</div><div class="lp-sub">Géomaticien · Sénégal · 2021</div></div>
+  </div>
+  <div class="lp-item" onclick="show('hlm',this)">
+    <div class="lp-dot" style="background:var(--red)"></div>
+    <div><div class="lp-label">Stage — HLM</div><div class="lp-sub">Géomaticien · [à compléter]</div></div>
+  </div>
+
+  <!-- 2 · PROJETS UNIVERSITAIRES -->
+  <div class="lp-sec"><span class="num">2</span> Projets universitaires (commandes)</div>
+  <div class="lp-item" onclick="show('publicis',this)">
+    <div class="lp-dot" style="background:#E0913C"></div>
+    <div><div class="lp-label">Publicis</div><div class="lp-sub">IA & géomarketing · 2025</div></div>
+  </div>
+  <div class="lp-item" onclick="show('adeupa',this)">
+    <div class="lp-dot" style="background:#E0913C"></div>
+    <div><div class="lp-label">ADEUPa</div><div class="lp-sub">Agence d'urbanisme · 2025</div></div>
+  </div>
+  <div class="lp-item" onclick="show('sncf',this)">
+    <div class="lp-dot" style="background:#E0913C"></div>
+    <div><div class="lp-label">SNCF Réseau</div><div class="lp-sub">Mobilités territoriales · 2025</div></div>
+  </div>
+  <div class="lp-item" onclick="show('gend',this)">
+    <div class="lp-dot" style="background:#E0913C"></div>
+    <div><div class="lp-label">Gendarmerie nationale</div><div class="lp-sub">Diagnostic territorial · 2025</div></div>
+  </div>
+
+  <!-- 3 · AUTRES RÉALISATIONS -->
+  <div class="lp-sec"><span class="num">3</span> Autres réalisations</div>
+  <div class="lp-item" onclick="show('r1',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 1</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r2',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 2</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r3',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 3</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r4',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 4</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r5',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 5</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r6',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 6</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r7',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 7</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r8',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 8</div><div class="lp-sub">[à compléter]</div></div></div>
+
+  <!-- FORMATION -->
+  <div class="lp-sec">Formation</div>
+  <div class="lp-form"><div class="lp-year">2024–26</div><div><div class="lp-deg">Master Géomatique SIGAT</div><div class="lp-school">Université Rennes 2</div></div></div>
+  <div class="lp-form"><div class="lp-year">2022–24</div><div><div class="lp-deg">Licence Géographie & Aménagement</div><div class="lp-school">Université Rennes 2</div></div></div>
+  <div class="lp-form"><div class="lp-year">2019–22</div><div><div class="lp-deg">Licence Pro Aménagement</div><div class="lp-school">Dakar, Sénégal</div></div></div>
+  <div class="lp-form"><div class="lp-year">2019</div><div><div class="lp-deg">Baccalauréat</div><div class="lp-school">Dakar, Sénégal</div></div></div>
+
+  <div class="lp-contact">
+    <a href="mailto:dembadiarietou@gmail.com">✉ dembadiarietou@gmail.com</a>
+    <a href="tel:+33780777609">☎ +33 7 80 77 76 09</a>
+    <span>◈ France · Mobilité nationale</span>
+  </div>
+</div>
+
+<!-- HERO MASQUÉ : le nom et les instructions restent uniquement à l'ouverture -->
+<div id="hero"></div>
+
+<!-- APERÇU SURVOL -->
+<div id="preview">
+  <div class="pv-cat" id="pv-cat"></div>
+  <div class="pv-title" id="pv-title"></div>
+  <div class="pv-desc" id="pv-desc"></div>
+  <div class="pv-more">▸ Cliquez pour voir le détail complet</div>
+</div>
+
+<!-- PANNEAU DÉTAIL -->
+<div id="rpanel">
+  <button id="rp-close" onclick="closeRp()">✕ Fermer</button>
+  <div id="rp-content"></div>
+</div>
+
+<!-- HUD -->
+<div id="hud"><span id="hud-lat">—</span> · <span id="hud-lng">—</span> · <span>WGS 84</span></div>
+<div id="legend">
+  <div class="leg"><div class="d" style="border-color:var(--red)"></div>Expériences pro</div>
+  <div class="leg"><div class="d" style="border-color:#E0913C"></div>Projets universitaires</div>
+  <div class="leg"><div class="d" style="border-color:#B8B2A8"></div>Autres réalisations</div>
+</div>
+
+<!-- VISIONNEUSE : IMAGE, VIDÉO ET PDF -->
+<div id="lightbox" onclick="closeMedia()">
+  <button id="lb-close" type="button" onclick="closeMedia()">✕ Fermer</button>
+
+  <div id="lb-stage" onclick="event.stopPropagation()">
+    <img id="lb-img" src="" alt="Aperçu du projet">
+    <video id="lb-video" controls playsinline></video>
+    <iframe id="lb-pdf" title="Lecteur PDF"></iframe>
+  </div>
+
+  <a id="lb-open-new" href="#" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+    Ouvrir le PDF dans un nouvel onglet ↗
+  </a>
+
+  <div id="lb-hint">Cliquez en dehors pour fermer</div>
+</div>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>
