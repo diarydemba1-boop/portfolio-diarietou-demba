@@ -12,7 +12,7 @@
 
    👉 Quand ton portfolio est prêt : passe à  false  avant de publier.
    ═══════════════════════════════════════════════════════════ */
-const MODE_EDITION = true;
+const MODE_EDITION = false;
 
 // ═══ DONNÉES ═══
 const DATA = {
@@ -119,6 +119,14 @@ const DATA = {
   ],
   imgs: [
     'Diagnostic et planification territoriale de Sébikotane'
+  ],
+
+  media: [
+    {
+      type: 'pdf',
+      src: 'assets/pdf/Sebikotane.pdf',
+      name: 'Diagnostic et planification territoriale de Sébikotane'
+    }
   ]
 },
 
@@ -169,6 +177,14 @@ const DATA = {
   ],
   imgs: [
     'Diagnostic territorial de la commune des HLM'
+  ],
+
+  media: [
+    {
+      type: 'pdf',
+      src: 'assets/pdf/HLM.pdf',
+      name: 'Diagnostic territorial de la commune des HLM'
+    }
   ]
 },
   // 2 · PROJETS UNIVERSITAIRES (commandes)
@@ -227,6 +243,19 @@ const DATA = {
     imgs: [
       'Grille de décision des solutions agentiques',
       'Expérimentation BigQuery'
+    ],
+
+    media: [
+      {
+        type: 'pdf',
+        src: 'assets/pdf/Publicis.pdf',
+        name: 'Grille de décision des solutions agentiques'
+      },
+      {
+        type: 'video',
+        src: 'assets/videos/experimentation bigquery.mp4',
+        name: 'Expérimentation BigQuery'
+      }
     ]
   },
 
@@ -283,6 +312,14 @@ const DATA = {
     ],
     imgs: [
       'Analyse territoriale des données Waze'
+    ],
+
+    media: [
+      {
+        type: 'pdf',
+        src: 'assets/pdf/Adeupa.pdf',
+        name: 'Analyse territoriale des données Waze'
+      }
     ]
   },
 
@@ -334,6 +371,14 @@ const DATA = {
     ],
     imgs: [
       'Étude prospective — profils et attractivité territoriale'
+    ],
+
+    media: [
+      {
+        type: 'pdf',
+        src: 'assets/pdf/SNCF.pdf',
+        name: 'Étude prospective — profils et attractivité territoriale'
+      }
     ]
   },
 
@@ -385,6 +430,14 @@ const DATA = {
     ],
     imgs: [
       'Atlas départementaux — sélection de planches'
+    ],
+
+    media: [
+      {
+        type: 'pdf',
+        src: 'assets/pdf/Gendarmerie.pdf',
+        name: 'Atlas départementaux — sélection de planches'
+      }
     ]
   },
 
@@ -450,6 +503,49 @@ const DATA = {
       'Flux domicile–travail',
       'Télédétection des Niayes',
       'Population et revenus à Nantes'
+    ],
+
+    media: [
+      {
+        type: 'image',
+        src: 'assets/images/GTFS.png',
+        name: 'Tramway et accessibilité urbaine'
+      },
+      {
+        type: 'pdf',
+        src: 'assets/pdf/Bivariée.pdf',
+        name: 'GES et densité de population'
+      },
+      {
+        type: 'pdf',
+        src: 'assets/pdf/Cartes_python.pdf',
+        name: 'FTTH et 5G reproductibles'
+      },
+      {
+        type: 'pdf',
+        src: 'assets/pdf/Déformations en fonction du nombre de boulodromes par EPCI.pdf',
+        name: 'Équipements sportifs et profils d’âge'
+      },
+      {
+        type: 'pdf',
+        src: 'assets/pdf/Atlas cartographique.pdf',
+        name: 'Évolution du chômage'
+      },
+      {
+        type: 'pdf',
+        src: 'assets/pdf/flux.pdf',
+        name: 'Flux domicile-travail'
+      },
+      {
+        type: 'pdf',
+        src: 'assets/pdf/teledction.pdf',
+        name: 'Télédétection des Niayes'
+      },
+      {
+        type: 'pdf',
+        src: 'assets/pdf/Ventilation_DEMBA_Diariétou_22210680.pdf',
+        name: 'Population et revenus à Nantes'
+      }
     ]
   }
 };
@@ -1017,19 +1113,75 @@ function hidePreview(){ pv.classList.remove('on'); }
 // ═══ PANNEAU DÉTAIL ═══
 const mediaCache = {};
 
-// Images intégrées directement dans DATA avec imgSrc.
-Object.entries(DATA).forEach(([id, d]) => {
-  if (!Array.isArray(d.imgSrc)) return;
+// ═══════════════════════════════════════════════════════════
+// CHARGEMENT PERMANENT DES IMAGES, PDF ET VIDÉOS
+// ═══════════════════════════════════════════════════════════
 
-  d.imgSrc.forEach((src, i) => {
-    if (!src) return;
+function detectMediaType(src = '') {
+  const cleanSrc = src
+    .split('?')[0]
+    .split('#')[0]
+    .toLowerCase();
 
-    mediaCache[id + '_' + i] = {
-      type: 'image',
-      src,
-      name: getMediaInfo(id, i).title || d.imgs?.[i] || 'Image'
-    };
-  });
+  if (cleanSrc.endsWith('.pdf')) {
+    return 'pdf';
+  }
+
+  if (
+    cleanSrc.endsWith('.mp4') ||
+    cleanSrc.endsWith('.webm') ||
+    cleanSrc.endsWith('.mov')
+  ) {
+    return 'video';
+  }
+
+  return 'image';
+}
+
+
+Object.entries(DATA).forEach(([id, data]) => {
+  if (Array.isArray(data.media)) {
+    data.media.forEach((item, index) => {
+      if (!item || !item.src) {
+        return;
+      }
+
+      mediaCache[id + '_' + index] = {
+        type:
+          item.type ||
+          detectMediaType(item.src),
+
+        src: item.src,
+
+        name:
+          item.name ||
+          getMediaInfo(id, index).title ||
+          data.imgs?.[index] ||
+          'Livrable',
+
+        objectUrl: false
+      };
+    });
+  }
+
+  // Compatibilité avec d’anciennes images définies avec imgSrc.
+  if (Array.isArray(data.imgSrc)) {
+    data.imgSrc.forEach((src, index) => {
+      if (!src || mediaCache[id + '_' + index]) {
+        return;
+      }
+
+      mediaCache[id + '_' + index] = {
+        type: detectMediaType(src),
+        src,
+        name:
+          getMediaInfo(id, index).title ||
+          data.imgs?.[index] ||
+          'Livrable',
+        objectUrl: false
+      };
+    });
+  }
 });
 
 function escapeHtml(value = '') {
