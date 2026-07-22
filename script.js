@@ -538,7 +538,7 @@ const DATA = {
       },
       {
         type: 'pdf',
-        src: 'assets/pdf/teledetection.pdf',
+        src: 'assets/pdf/niayes.pdf',
         name: 'Télédétection des Niayes'
       },
       {
