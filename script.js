@@ -18,58 +18,94 @@ const MODE_EDITION = false;
 const DATA = {
   // 1 · EXPÉRIENCES PRO
   sdis: {
-  grp: 'exp',
-  color: 'red',
-  icon: '🚒',
-  lat: 47.47423,
-  lng: -0.61439,
-  zoom: 15,
+    grp: 'exp',
+    color: 'red',
+    icon: '🚒',
+    lat: 47.47423,
+    lng: -0.61439,
+    zoom: 15,
 
-  cat: 'Stage de fin d’études · Géomaticienne',
+    cat: 'Stage de fin d’études · Géomaticienne',
 
-  title: 'Modernisation des processus SIG — SDIS 49',
+    title: 'Modernisation des processus SIG — SDIS 49',
 
-  period: '2026 · Angers · Stage de fin d’études',
+    period: '2026 · Angers · Stage de fin d’études',
 
-  short: `Modernisation de six processus SIG afin de remplacer progressivement les anciens traitements par une organisation fondée sur QGIS, PostGIS et Lizmap.`,
+    short: `Modernisation de plusieurs processus SIG afin de remplacer progressivement les anciens traitements par une organisation fondée sur QGIS, PostGIS et Lizmap.`,
 
-  context: `Le stage de fin d’études mené au SDIS de Maine-et-Loire porte sur la modernisation de six processus SIG auparavant réalisés principalement avec GeoConcept. L’objectif consiste à construire une organisation plus homogène, automatisée et durable autour de QGIS, PostGIS et Lizmap. Les plans muraux et les atlas restent des productions imprimées ou PDF, tandis que la sectorisation, les analyses spatiales, les isochrones et les données sur les engins peuvent être consultés dans le WebSIG.`,
+    context: `Le stage de fin d’études mené au SDIS de Maine-et-Loire porte sur la modernisation de plusieurs processus SIG auparavant réalisés principalement avec GeoConcept. L’objectif consiste à construire une organisation plus homogène, automatisée et durable autour de QGIS, PostGIS et Lizmap. Les plans muraux et les atlas restent des productions imprimées ou PDF, tandis que la sectorisation, les isochrones et les données sur les engins peuvent être consultés dans le WebSIG.`,
 
-  impact: `La mission a conduit à la conception d’un fond de carte vectoriel mutualisé, à l’automatisation de la production des atlas et à la structuration de plusieurs référentiels opérationnels. Cette organisation réduit les opérations manuelles, centralise les données et facilite l’actualisation ainsi que la diffusion des productions cartographiques.`,
+    impact: `La mission a conduit à la conception d’un fond de carte vectoriel mutualisé, à l’automatisation de la production des atlas et à la structuration de plusieurs référentiels opérationnels. Cette organisation réduit les opérations manuelles, centralise les données et facilite l’actualisation ainsi que la diffusion des productions cartographiques.`,
 
-  stats: [],
+    stats: [],
 
-  tags: [
-    {
-      c: 'Logiciels',
-      t: ['QGIS', 'Lizmap', 'GeoConcept']
-    },
-    {
-      c: 'Bases de données',
-      t: ['PostgreSQL', 'PostGIS']
-    },
-    {
-      c: 'Développement',
-      t: ['Python', 'Model Builder']
-    },
-    {
-      c: 'Méthodes',
-      t: [
-        'Automatisation',
-        'Structuration des données',
-        'Analyse spatiale',
-        'WebSIG'
-      ]
-    }
-  ],
-  imgs: [
-    'Fond de carte et plans muraux',
-    'Atlas opérationnels automatisés',
-    'Sectorisation opérationnelle',
-    'Isochrones et accessibilité',
-    'Engins et WebSIG Lizmap'
-  ]
-},
+    tags: [
+      {
+        c: 'Logiciels',
+        t: ['QGIS', 'Lizmap', 'GeoConcept']
+      },
+      {
+        c: 'Bases de données',
+        t: ['PostgreSQL', 'PostGIS']
+      },
+      {
+        c: 'Développement',
+        t: ['Python', 'Model Builder']
+      },
+      {
+        c: 'Méthodes',
+        t: [
+          'Automatisation',
+          'Structuration des données',
+          'Analyse de réseau',
+          'WebSIG'
+        ]
+      }
+    ],
+
+    imgs: [
+      'Fond de carte vectoriel et plans muraux',
+      'Atlas opérationnels automatisés',
+      'Model Builder et script d’assemblage',
+      'Sectorisation opérationnelle',
+      'Isochrones et accessibilité',
+      'Engins et WebSIG Lizmap'
+    ],
+
+    media: [
+      {
+        type: 'video',
+        src: 'assets/videos/Fond vectoriel.MOV',
+        name: 'Fond de carte vectoriel et plans muraux'
+      },
+      {
+        type: 'pdf',
+        src: 'assets/pdf/Atlas.pdf',
+        name: 'Atlas opérationnels automatisés'
+      },
+      {
+        type: 'pdf',
+        src: 'assets/pdf/Modeleur Qgis_Script.pdf',
+        name: 'Model Builder et script d’assemblage'
+      },
+      {
+        type: 'video',
+        src: 'assets/videos/Sectorisation.MOV',
+        name: 'Sectorisation opérationnelle'
+      },
+      {
+        type: 'video',
+        src: 'assets/videos/Isochrones.MOV',
+        name: 'Isochrones et accessibilité'
+      },
+      {
+        type: 'video',
+        src: 'assets/videos/Representations(localisation_engins).MOV',
+        name: 'Engins et WebSIG Lizmap'
+      }
+    ]
+  },
+
   sebikotane: {
   grp: 'exp',
   color: 'red',
@@ -202,9 +238,9 @@ const DATA = {
 
     short: `Étude exploratoire visant à identifier comment l’IA agentique peut automatiser certaines tâches géomarketing tout en maintenant le contrôle et l’expertise humaine.`,
 
-    context: `Le projet réalisé avec Publicis Connected Media porte sur l’intégration de l’IA agentique dans les processus géomarketing. L’étude s’appuie sur l’analyse du fonctionnement du pôle, de ses principales étapes de production et des difficultés rencontrées dans le traitement des données, l’expertise marché et les études clients.`,
+    context: `Le projet réalisé avec Publicis Connected Media porte sur l’intégration de l’IA agentique dans les processus géomarketing. L’étude s’appuie sur l’analyse du fonctionnement du pôle, la comparaison de plusieurs solutions techniques et une expérimentation menée dans BigQuery.`,
 
-    impact: `L’étude a permis d’identifier les tâches pouvant être automatisées ou assistées, de comparer plusieurs solutions techniques et de proposer une architecture combinant orchestration, préparation des données et agents spécialisés. Une expérimentation a également permis d’évaluer l’utilisation d’un agent de traitement de données dans BigQuery. Le résultat constitue une feuille de route méthodologique, et non encore un système déployé en production.`,
+    impact: `L’étude a permis d’identifier les tâches pouvant être automatisées ou assistées, de comparer plusieurs architectures et d’évaluer la capacité d’un agent à explorer et contrôler un jeu de données dans BigQuery. Le résultat constitue une feuille de route méthodologique associant automatisation, gouvernance des données et validation humaine.`,
 
     stats: [],
 
@@ -215,7 +251,7 @@ const DATA = {
           'Analyse des besoins',
           'Benchmark',
           'Grille multicritère',
-          'Analyse SWOT'
+          'Expérimentation'
         ]
       },
       {
@@ -238,24 +274,20 @@ const DATA = {
         ]
       }
     ],
+
     imgs: [
-      'Grille de décision des solutions agentiques',
-      'Expérimentation BigQuery'
+      'Synthèse du projet et expérimentation BigQuery'
     ],
 
     media: [
       {
-        type: 'pdf',
-        src: 'assets/pdf/Publicis.pdf',
-        name: 'Grille de décision des solutions agentiques'
-      },
-      {
         type: 'video',
-        src: 'assets/videos/experimentation bigquery.mp4',
-        name: 'Expérimentation BigQuery'
+        src: 'assets/videos/publicis.mp4',
+        name: 'Synthèse du projet et expérimentation BigQuery'
       }
     ]
   },
+
 
   adeupa: {
     grp: 'univ',
@@ -597,11 +629,11 @@ const MEDIA_DETAILS = {
   mediaItem(
     'Fond de carte vectoriel et plans muraux',
 
-    `Création d’un fond de carte vectoriel commun destiné à servir de base aux plans muraux et aux atlas opérationnels. Le fond rassemble les principales informations nécessaires à la lecture du territoire : routes, communes, bâtiments, hydrographie, végétation, voies ferrées et données métiers.`,
+    `Cette démonstration présente le fond cartographique commun conçu pour les plans muraux et les atlas opérationnels. Il rassemble les principales informations nécessaires à la lecture du territoire : routes, communes, bâtiments, hydrographie, végétation, voies ferrées et données métiers.`,
 
     `La réalisation repose sur la sélection et l’organisation des couches, la définition de leur ordre d’affichage, la création de la symbologie, le travail des étiquettes et l’adaptation du niveau de détail aux différentes échelles cartographiques.`,
 
-    `Le SDIS dispose d’une base cartographique homogène, réutilisable et plus facile à actualiser pour produire de nouveaux plans muraux et de nouveaux atlas.`,
+    `Le SDIS dispose d’une base cartographique homogène, réutilisable et plus facile à actualiser pour produire de nouveaux plans muraux ainsi que de nouveaux atlas.`,
 
     [
       'QGIS',
@@ -613,31 +645,49 @@ const MEDIA_DETAILS = {
   ),
 
   mediaItem(
-    'Automatisation des atlas opérationnels',
+    'Atlas opérationnels automatisés',
 
-    `La conception des atlas était auparavant réalisée dans GeoConcept avec plusieurs opérations manuelles. Le projet consiste à migrer cette production vers QGIS et à automatiser les traitements nécessaires à la génération des atlas communaux.`,
+    `Ce document présente le résultat final de la migration des atlas opérationnels vers QGIS. Il réunit les pages de couverture, les pages de repérage, les planches cartographiques et les éléments d’indexation nécessaires à la consultation par commune.`,
 
-    `La chaîne de production comprend la conception des mises en page, la préparation des expressions de l’atlas et l’automatisation des filtres, des emprises, des numéros de pages, des informations communales, des exports et de l’assemblage des PDF.`,
+    `La chaîne de production s’appuie sur les atlas QGIS, des expressions dynamiques, des filtres liés à la commune, des emprises automatiques et une organisation commune des mises en page.`,
 
-    `La nouvelle chaîne permet de produire des atlas plus homogènes et reproductibles tout en limitant les modifications manuelles pour chaque commune.`,
+    `La production obtenue est plus homogène et reproductible. Une modification du référentiel ou de la mise en page peut être répercutée sans reprendre manuellement chaque commune.`,
 
     [
       'QGIS',
       'Atlas QGIS',
-      'Model Builder',
+      'Expressions',
+      'Mises en page',
+      'Export PDF'
+    ]
+  ),
+
+  mediaItem(
+    'Automatisation avec Model Builder et script Python d’assemblage',
+
+    `Ce livrable présente le modèle graphique QGIS utilisé pour organiser les traitements de préparation ainsi qu’un extrait du script Python chargé d’exporter et d’assembler les différentes parties de l’atlas dans un document final.`,
+
+    `Le Model Builder enchaîne les opérations de sélection, de filtrage et de préparation des données. Le script Python pilote ensuite les mises en page, récupère les exports nécessaires et assemble automatiquement les PDF dans le bon ordre.`,
+
+    `Cette automatisation évite le recours à un tableau Excel intermédiaire et limite les opérations manuelles. La production devient plus rapide, plus fiable et plus facilement reproductible pour les différentes communes.`,
+
+    [
+      'QGIS Model Builder',
       'Python',
-      'PyPDF'
+      'PyQGIS',
+      'PyPDF',
+      'Automatisation'
     ]
   ),
 
   mediaItem(
     'Centralisation de la sectorisation opérationnelle',
 
-    `Ce processus vise à regrouper les informations permettant de connaître le découpage opérationnel du territoire et le rattachement des secteurs aux différents centres d’incendie et de secours.`,
+    `Cette démonstration présente l’organisation des informations permettant de connaître le découpage opérationnel du territoire et le rattachement des secteurs aux différents centres d’incendie et de secours.`,
 
-    `La réalisation repose sur la structuration des couches de sectorisation et l’organisation des informations nécessaires à leur consultation ainsi qu’à leur mise à jour.`,
+    `La réalisation repose sur la structuration des couches de sectorisation, l’harmonisation de leur représentation et l’organisation des informations nécessaires à leur consultation ainsi qu’à leur mise à jour.`,
 
-    `La centralisation permet de disposer d’une référence unique pour comprendre les différents découpages territoriaux et limiter la dispersion des informations.`,
+    `La centralisation fournit une référence unique pour comprendre les différents découpages territoriaux et limite la dispersion des informations entre plusieurs supports.`,
 
     [
       'QGIS',
@@ -647,15 +697,14 @@ const MEDIA_DETAILS = {
     ]
   ),
 
-
   mediaItem(
     'Calcul et représentation des isochrones',
 
-    `Les isochrones permettent de représenter les zones accessibles depuis un point de départ selon un temps ou une distance donnée. Elles peuvent notamment servir à étudier la couverture et l’accessibilité du territoire.`,
+    `Cette démonstration présente des zones d’accessibilité calculées depuis différents points de départ selon plusieurs temps de parcours. Les classes permettent de comparer rapidement les secteurs les mieux ou les moins bien desservis.`,
 
-    `La méthode comprend la préparation des points de départ, le paramétrage des calculs et la représentation cartographique des différentes zones d’accessibilité.`,
+    `La méthode comprend la préparation des points de départ, le paramétrage des calculs de réseau, la classification des temps de parcours et la mise en forme des résultats dans QGIS.`,
 
-    `Le résultat permet de comparer visuellement les territoires couverts et d’identifier les secteurs présentant des différences d’accessibilité.`,
+    `Le résultat facilite la comparaison de la couverture du territoire et l’identification des secteurs présentant des écarts d’accessibilité.`,
 
     [
       'QGIS',
@@ -666,20 +715,20 @@ const MEDIA_DETAILS = {
   ),
 
   mediaItem(
-    'Centralisation des engins et diffusion dans Lizmap',
+    'Localisation des engins et diffusion dans Lizmap',
 
-    `Ce volet vise à centraliser les informations relatives aux engins et à rendre consultables dans une même interface les principales données SIG utiles aux utilisateurs. La sectorisation, les analyses spatiales, les isochrones et les données sur les engins peuvent ainsi être diffusées dans le WebSIG Lizmap.`,
+    `Cette démonstration présente la représentation des engins et leur consultation dans un environnement WebSIG. Les symboles, les informations associées et les groupes de couches sont organisés pour une lecture rapide depuis un navigateur.`,
 
-    `La diffusion repose sur la préparation des projets QGIS, l’organisation des groupes de couches, la structuration des informations affichées et le paramétrage de leur publication dans Lizmap.`,
+    `La diffusion repose sur la préparation du projet QGIS, l’utilisation de symboles adaptés, la structuration des données et le paramétrage de leur publication dans Lizmap.`,
 
-    `Les utilisateurs peuvent consulter les données depuis un navigateur, sans avoir à ouvrir directement QGIS ni à rechercher les informations dans plusieurs fichiers différents.`,
+    `Les informations peuvent être consultées dans une interface unique sans ouvrir directement QGIS ni rechercher les données dans plusieurs fichiers distincts.`,
 
     [
       'QGIS',
       'Lizmap',
       'PostGIS',
       'WebSIG',
-      'Centralisation des données'
+      'Symboles raster'
     ]
   )
 ],
@@ -726,40 +775,21 @@ const MEDIA_DETAILS = {
 
   publicis: [
     mediaItem(
-      'Grille de décision des solutions agentiques',
+      'Synthèse du projet et expérimentation BigQuery',
 
-      `Cette grille compare plusieurs solutions susceptibles d’être intégrées aux processus géomarketing : plateformes de données, outils d’orchestration, frameworks agentiques et solutions de développement sur mesure.`,
+      `Cette vidéo présente l’ensemble de l’étude consacrée à l’intégration de l’IA agentique dans les processus géomarketing. Elle réunit le diagnostic des besoins, la comparaison des solutions, la grille de décision et l’expérimentation menée dans BigQuery.`,
 
-      `Les solutions ont été évaluées selon des critères techniques et organisationnels : performance, connectivité, facilité de déploiement, sécurité, gouvernance, capacité d’automatisation et maintien du contrôle humain. Une pondération permet de comparer objectivement les différentes options.`,
+      `Les solutions ont été comparées selon des critères techniques et organisationnels : connectivité, facilité de déploiement, sécurité, gouvernance, capacité d’automatisation et maintien du contrôle humain. Une expérimentation a ensuite permis d’observer le comportement d’un agent lors de l’exploration et du contrôle d’un jeu de données.`,
 
-      `L’analyse montre qu’aucune solution unique ne couvre l’ensemble des besoins. L’architecture la plus pertinente repose sur une combinaison de technologies spécialisées, articulant traitement des données, orchestration et agents métiers.`,
-
-      [
-        'Analyse multicritère',
-        'Grille de décision',
-        'Benchmark',
-        'SWOT',
-        'BigQuery',
-        'n8n',
-        'LangGraph'
-      ]
-    ),
-
-    mediaItem(
-      'Expérimentation d’un agent de traitement de données dans BigQuery',
-
-      `Cette expérimentation évalue la capacité d’un agent intégré à BigQuery à analyser la structure d’un jeu de données, à identifier certaines anomalies et à proposer des contrôles adaptés.`,
-
-      `Le test repose sur l’importation d’un jeu de données, l’examen de son schéma, la formulation de requêtes et la comparaison entre les résultats produits automatiquement et les vérifications attendues.`,
-
-      `L’expérimentation confirme l’intérêt de l’assistance agentique pour accélérer l’exploration et le contrôle initial des données. Elle montre également la nécessité de conserver une validation humaine pour garantir la fiabilité des traitements et des interprétations.`,
+      `La synthèse met en évidence l’intérêt d’une architecture combinant plusieurs technologies spécialisées. Elle confirme également que l’assistance agentique peut accélérer l’analyse initiale des données, sous réserve d’une validation humaine des traitements et des interprétations.`,
 
       [
         'BigQuery',
         'IA agentique',
+        'Grille multicritère',
+        'Benchmark',
         'Data quality',
-        'Expérimentation',
-        'Contrôle des données'
+        'Automatisation'
       ]
     )
   ],
