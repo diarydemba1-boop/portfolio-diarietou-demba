@@ -75,7 +75,7 @@ const DATA = {
     media: [
       {
         type: 'video',
-        src: 'assets/videos/Fond-vectoriel.mp4',
+        src: 'assets/videos/Fond_vectoriel(1).mp4',
         name: 'Fond de carte vectoriel et plans muraux'
       },
       {
@@ -90,17 +90,17 @@ const DATA = {
       },
       {
         type: 'video',
-        src: 'assets/videos/Sectorisation.mp4',
+        src: 'assets/videos/Sectorisation(1).mp4',
         name: 'Sectorisation opérationnelle'
       },
       {
         type: 'video',
-        src: 'assets/videos/Isochrones.mp4',
+        src: 'assets/videos/Isochrones(1).mp4',
         name: 'Isochrones et accessibilité'
       },
       {
         type: 'video',
-        src: 'assets/videos/Representations-localisation-engins.mp4',
+        src: 'assets/videos/Representations_localisation_engins_(1).mp4',
         name: 'Engins et WebSIG Lizmap'
       }
     ]
@@ -282,7 +282,7 @@ const DATA = {
     media: [
       {
         type: 'video',
-        src: 'assets/videos/Publicis.mp4',
+        src: 'assets/videos/publicis.mp4',
         name: 'Synthèse du projet et expérimentation BigQuery'
       }
     ]
@@ -2264,10 +2264,380 @@ function closeMedia() {
   resetMediaViewer();
 }
 
+
+// ═══════════════════════════════════════════════════════════
+// PANNEAU DE PROJET REDIMENSIONNABLE
+// Tirer le bord gauche du panneau pour l’agrandir ou le réduire.
+// Un double-clic rétablit la largeur d’origine.
+// ═══════════════════════════════════════════════════════════
+
+function ensureResizableProjectPanel() {
+  const panel = document.getElementById('rpanel');
+
+  if (
+    !panel ||
+    document.getElementById('rp-resize-handle')
+  ) {
+    return;
+  }
+
+  const handle = document.createElement('button');
+
+  handle.id = 'rp-resize-handle';
+  handle.type = 'button';
+  handle.title =
+    'Tirer pour redimensionner le panneau';
+  handle.setAttribute(
+    'aria-label',
+    'Redimensionner le panneau du projet'
+  );
+
+  handle.innerHTML = `
+    <span aria-hidden="true">⋮</span>
+  `;
+
+  panel.appendChild(handle);
+
+  const storageKey =
+    'portfolio-project-panel-width';
+
+  let startX = 0;
+  let startWidth = 0;
+  let currentWidth = 0;
+
+  function getLimits() {
+    const minWidth = 390;
+
+    const maxWidth = Math.max(
+      minWidth,
+      Math.min(
+        920,
+        window.innerWidth - 430
+      )
+    );
+
+    return {
+      minWidth,
+      maxWidth
+    };
+  }
+
+  function applyWidth(width, save = false) {
+    const limits = getLimits();
+
+    currentWidth = Math.min(
+      limits.maxWidth,
+      Math.max(
+        limits.minWidth,
+        Math.round(width)
+      )
+    );
+
+    panel.style.width =
+      `${currentWidth}px`;
+
+    panel.classList.add(
+      'rp-user-resized'
+    );
+
+    if (save) {
+      try {
+        localStorage.setItem(
+          storageKey,
+          String(currentWidth)
+        );
+      } catch (error) {
+        // Le stockage local peut être désactivé.
+      }
+    }
+
+    if (map) {
+      window.requestAnimationFrame(
+        () => map.invalidateSize()
+      );
+    }
+  }
+
+  function restoreStoredWidth() {
+    try {
+      const storedWidth = Number(
+        localStorage.getItem(storageKey)
+      );
+
+      if (
+        Number.isFinite(storedWidth) &&
+        storedWidth >= 390
+      ) {
+        applyWidth(storedWidth);
+      }
+    } catch (error) {
+      // Le stockage local peut être désactivé.
+    }
+  }
+
+  function resizePanel(event) {
+    if (
+      !handle.hasPointerCapture(
+        event.pointerId
+      )
+    ) {
+      return;
+    }
+
+    const width =
+      startWidth +
+      (startX - event.clientX);
+
+    applyWidth(width);
+  }
+
+  function stopResize(event) {
+    if (
+      handle.hasPointerCapture(
+        event.pointerId
+      )
+    ) {
+      handle.releasePointerCapture(
+        event.pointerId
+      );
+    }
+
+    document.body.classList.remove(
+      'rp-is-resizing'
+    );
+
+    applyWidth(currentWidth, true);
+  }
+
+  handle.addEventListener(
+    'pointerdown',
+    event => {
+      if (
+        window.matchMedia(
+          '(max-width: 900px)'
+        ).matches
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      startX = event.clientX;
+      startWidth =
+        panel.getBoundingClientRect().width;
+      currentWidth = startWidth;
+
+      handle.setPointerCapture(
+        event.pointerId
+      );
+
+      document.body.classList.add(
+        'rp-is-resizing'
+      );
+    }
+  );
+
+  handle.addEventListener(
+    'pointermove',
+    resizePanel
+  );
+
+  handle.addEventListener(
+    'pointerup',
+    stopResize
+  );
+
+  handle.addEventListener(
+    'pointercancel',
+    stopResize
+  );
+
+  handle.addEventListener(
+    'click',
+    event => {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  );
+
+  handle.addEventListener(
+    'dblclick',
+    event => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      panel.style.removeProperty('width');
+      panel.classList.remove(
+        'rp-user-resized'
+      );
+
+      try {
+        localStorage.removeItem(
+          storageKey
+        );
+      } catch (error) {
+        // Le stockage local peut être désactivé.
+      }
+
+      if (map) {
+        window.requestAnimationFrame(
+          () => map.invalidateSize()
+        );
+      }
+    }
+  );
+
+  window.addEventListener(
+    'resize',
+    () => {
+      if (
+        panel.classList.contains(
+          'rp-user-resized'
+        )
+      ) {
+        applyWidth(currentWidth);
+      }
+    }
+  );
+
+  const style =
+    document.createElement('style');
+
+  style.id =
+    'resizable-project-panel-style';
+
+  style.textContent = `
+    #rpanel {
+      box-sizing: border-box;
+    }
+
+    #rp-resize-handle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 80;
+      width: 15px;
+      height: 100%;
+      padding: 0;
+      border: 0;
+      border-right:
+        1px solid transparent;
+      background: transparent;
+      color: var(--mist);
+      cursor: col-resize;
+      touch-action: none;
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        opacity 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    #rpanel.open #rp-resize-handle {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #rp-resize-handle::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.08);
+      transition: background 0.2s ease;
+    }
+
+    #rp-resize-handle span {
+      position: absolute;
+      top: 50%;
+      left: 6px;
+      transform:
+        translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 12px;
+      height: 72px;
+      border:
+        1px solid var(--ink3);
+      border-radius: 0 5px 5px 0;
+      background: #202326;
+      font-size: 1rem;
+      line-height: 1;
+      color: var(--mist);
+      box-shadow:
+        3px 0 12px
+        rgba(0, 0, 0, 0.2);
+      transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    #rp-resize-handle:hover,
+    body.rp-is-resizing
+    #rp-resize-handle {
+      background:
+        linear-gradient(
+          90deg,
+          rgba(180, 31, 58, 0.16),
+          transparent
+        );
+      border-right-color:
+        rgba(180, 31, 58, 0.35);
+    }
+
+    #rp-resize-handle:hover::before,
+    body.rp-is-resizing
+    #rp-resize-handle::before {
+      background: var(--red);
+    }
+
+    #rp-resize-handle:hover span,
+    body.rp-is-resizing
+    #rp-resize-handle span {
+      border-color: var(--red);
+      background: #2b2023;
+      color: var(--red);
+    }
+
+    body.rp-is-resizing {
+      cursor: col-resize !important;
+      user-select: none !important;
+    }
+
+    body.rp-is-resizing #map,
+    body.rp-is-resizing iframe,
+    body.rp-is-resizing video,
+    body.rp-is-resizing img {
+      pointer-events: none !important;
+    }
+
+    @media (max-width: 900px) {
+      #rp-resize-handle {
+        display: none;
+      }
+
+      #rpanel.rp-user-resized {
+        width: auto !important;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+
+  restoreStoredWidth();
+}
+
 function initializePortfolioUI() {
   normalizeRealisationsMenu();
   ensureRealisationsGalleryStyle();
   ensureMediaDescriptionUI();
+  ensureResizableProjectPanel();
 }
 
 if (document.readyState === 'loading') {
