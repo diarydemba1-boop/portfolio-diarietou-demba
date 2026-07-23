@@ -75,7 +75,7 @@ const DATA = {
     media: [
       {
         type: 'video',
-        src: 'assets/videos/Fond_vectoriel(1).mp4',
+        src: 'assets/videos/fond-vectoriel.mp4',
         name: 'Fond de carte vectoriel et plans muraux'
       },
       {
@@ -90,17 +90,17 @@ const DATA = {
       },
       {
         type: 'video',
-        src: 'assets/videos/Sectorisation(1).mp4',
+        src: 'assets/videos/sectorisation.mp4',
         name: 'Sectorisation opérationnelle'
       },
       {
         type: 'video',
-        src: 'assets/videos/Isochrones(1).mp4',
+        src: 'assets/videos/isochrones.mp4',
         name: 'Isochrones et accessibilité'
       },
       {
         type: 'video',
-        src: 'assets/videos/Representations_localisation_engins_(1).mp4',
+        src: 'assets/videos/representations-localisation-engins.mp4',
         name: 'Engins et WebSIG Lizmap'
       }
     ]
