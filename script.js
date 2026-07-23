@@ -1525,6 +1525,38 @@ function ensureRealisationsGalleryStyle() {
       display: flex;
     }
 
+    .gslot-pdf-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.5rem;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(17, 19, 21, 0.96),
+          rgba(37, 41, 45, 0.94)
+        );
+      color: var(--white);
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .gslot-pdf-icon {
+      font-size: 2.4rem;
+      line-height: 1;
+    }
+
+    .gslot-pdf-hint {
+      font-family: 'IBM Plex Mono', monospace;
+      max-width: 200px;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--mist);
+    }
+
     @media (max-width: 760px) {
       .rp-gal-one,
       .rp-gal-two,
@@ -1612,12 +1644,10 @@ function renderGallery(id, d) {
       `;
     } else if (media?.type === 'pdf') {
       content = `
-        <iframe
-          class="gslot-pdf-preview"
-          src="${media.src}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0"
-          title="Aperçu de ${safeTitle}"
-          tabindex="-1"
-        ></iframe>
+        <div class="gslot-pdf-placeholder">
+          <span class="gslot-pdf-icon">📄</span>
+          <span class="gslot-pdf-hint">Cliquer pour ouvrir le PDF</span>
+        </div>
         <button class="gslot-media-click" type="button" aria-label="Ouvrir ${safeTitle}" onclick="openMedia('${id}',${i})"></button>
         <div class="gslot-type-badge">PDF</div>
         <div class="gslot-badge">${safeTitle}</div>
