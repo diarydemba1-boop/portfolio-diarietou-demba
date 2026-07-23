@@ -75,7 +75,7 @@ const DATA = {
     media: [
       {
         type: 'video',
-        src: 'assets/videos/Fond vectoriel.MOV',
+        src: 'assets/videos/Fond-vectoriel.mp4',
         name: 'Fond de carte vectoriel et plans muraux'
       },
       {
@@ -90,17 +90,17 @@ const DATA = {
       },
       {
         type: 'video',
-        src: 'assets/videos/Sectorisation.MOV',
+        src: 'assets/videos/Sectorisation.mp4',
         name: 'Sectorisation opérationnelle'
       },
       {
         type: 'video',
-        src: 'assets/videos/Isochrones.MOV',
+        src: 'assets/videos/Isochrones.mp4',
         name: 'Isochrones et accessibilité'
       },
       {
         type: 'video',
-        src: 'assets/videos/Representations(localisation_engins).MOV',
+        src: 'assets/videos/Representations-localisation-engins.mp4',
         name: 'Engins et WebSIG Lizmap'
       }
     ]
@@ -282,7 +282,7 @@ const DATA = {
     media: [
       {
         type: 'video',
-        src: 'assets/videos/publicis.mp4',
+        src: 'assets/videos/Publicis.mp4',
         name: 'Synthèse du projet et expérimentation BigQuery'
       }
     ]
@@ -1246,6 +1246,48 @@ function ensureRealisationsGalleryStyle() {
       line-height: 1.4;
     }
 
+    .gslot-video-fallback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.45rem;
+      padding: 2rem;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(17, 19, 21, 0.96),
+          rgba(37, 41, 45, 0.94)
+        );
+      color: var(--white);
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .gslot-video-fallback strong {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      color: var(--red);
+    }
+
+    .gslot-video-fallback span {
+      max-width: 220px;
+      font-size: 0.72rem;
+      line-height: 1.5;
+      color: var(--mist);
+    }
+
+    .gslot.video-load-error .gslot-video-preview {
+      display: none;
+    }
+
+    .gslot.video-load-error .gslot-video-fallback {
+      display: flex;
+    }
+
     @media (max-width: 760px) {
       .rp-gal-one,
       .rp-gal-two,
@@ -1316,9 +1358,14 @@ function renderGallery(id, d) {
           src="${media.src}"
           muted
           playsinline
-          preload="auto"
+          preload="metadata"
           onloadedmetadata="prepareVideoPreview(this)"
+          onerror="this.closest('.gslot')?.classList.add('video-load-error')"
         ></video>
+        <div class="gslot-video-fallback">
+          <strong>VIDÉO</strong>
+          <span>Cliquer pour ouvrir la démonstration</span>
+        </div>
         <button class="gslot-media-click" type="button" aria-label="Lire ${safeTitle}" onclick="openMedia('${id}',${i})"></button>
         <div class="gslot-play">▶</div>
         <div class="gslot-type-badge">VIDÉO</div>
@@ -1747,11 +1794,40 @@ function ensureMediaDescriptionUI() {
   const style = document.createElement('style');
   style.id = 'media-description-styles';
   style.textContent = `
+    #lightbox {
+      box-sizing: border-box;
+      padding-top: 64px;
+    }
+
+    #lightbox [onclick*="closeMedia"],
+    #lightbox .lb-close,
+    #lightbox .lightbox-close,
+    #lightbox .close {
+      position: fixed !important;
+      top: 14px !important;
+      right: 16px !important;
+      z-index: 10050 !important;
+      min-height: 40px;
+      padding: 0.65rem 1rem !important;
+      border: 1px solid var(--line) !important;
+      background: #202326 !important;
+      color: var(--white) !important;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    #lightbox [onclick*="closeMedia"]:hover,
+    #lightbox .lb-close:hover,
+    #lightbox .lightbox-close:hover,
+    #lightbox .close:hover {
+      border-color: var(--red) !important;
+      color: var(--red) !important;
+    }
+
     #lb-layout {
       --lb-info-width: 360px;
 
       width: min(1480px, 96vw);
-      height: min(850px, 90vh);
+      height: min(820px, calc(100vh - 86px));
       display: grid;
       grid-template-columns:
         minmax(320px, 1fr)
@@ -1995,9 +2071,13 @@ function ensureMediaDescriptionUI() {
     }
 
     @media (max-width: 900px) {
+      #lightbox {
+        padding-top: 58px;
+      }
+
       #lb-layout {
         width: 96vw;
-        height: 90vh;
+        height: calc(100vh - 72px);
         grid-template-columns: 1fr;
         grid-template-rows:
           minmax(300px, 58%)
