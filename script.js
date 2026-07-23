@@ -31,9 +31,9 @@ const DATA = {
 
     period: '2026 · Angers · Stage de fin d’études',
 
-    short: `Modernisation de plusieurs processus SIG afin de remplacer progressivement les anciens traitements par une organisation fondée sur QGIS, PostGIS et Lizmap.`,
+    short: `Modernisation de plusieurs processus SIG afin de remplacer progressivement les anciens traitements par une organisation fondée sur QGIS, Python et Lizmap.`,
 
-    context: `Le stage de fin d’études mené au SDIS de Maine-et-Loire porte sur la modernisation de plusieurs processus SIG auparavant réalisés principalement avec GeoConcept. L’objectif consiste à construire une organisation plus homogène, automatisée et durable autour de QGIS, PostGIS et Lizmap. Les plans muraux et les atlas restent des productions imprimées ou PDF, tandis que la sectorisation, les isochrones et les données sur les engins peuvent être consultés dans le WebSIG.`,
+    context: `Le stage de fin d’études mené au SDIS de Maine-et-Loire porte sur la modernisation de plusieurs processus SIG auparavant réalisés principalement avec GeoConcept. L’objectif consiste à construire une organisation plus homogène, automatisée et durable autour de QGIS, Python et Lizmap. Les plans muraux et les atlas restent des productions imprimées ou PDF, tandis que la sectorisation, les isochrones et les données sur les engins peuvent être consultés dans le WebSIG.`,
 
     impact: `La mission a conduit à la conception d’un fond de carte vectoriel mutualisé, à l’automatisation de la production des atlas et à la structuration de plusieurs référentiels opérationnels. Cette organisation réduit les opérations manuelles, centralise les données et facilite l’actualisation ainsi que la diffusion des productions cartographiques.`,
 
@@ -43,10 +43,6 @@ const DATA = {
       {
         c: 'Logiciels',
         t: ['QGIS', 'Lizmap', 'GeoConcept']
-      },
-      {
-        c: 'Bases de données',
-        t: ['PostgreSQL', 'PostGIS']
       },
       {
         c: 'Développement',
@@ -610,18 +606,39 @@ function normalizeRealisationsMenu() {
 // C'est principalement ici que tu modifies les explications.
 // L'ordre doit correspondre à la liste « imgs » de chaque projet.
 // ═══════════════════════════════════════════════════════════
-function mediaItem(title, description, role, result, tools = []) {
-  return { title, description, role, result, tools };
+function mediaItem(
+  title,
+  description,
+  role,
+  result,
+  tools = [],
+  methods = [],
+  data = []
+) {
+  return {
+    title,
+    description,
+    role,
+    result,
+    tools,
+    methods,
+    data
+  };
 }
 
 function placeholderMedia(projectTitle, count = 3) {
-  return Array.from({ length: count }, (_, index) => mediaItem(
-    `${projectTitle} — livrable ${index + 1}`,
-    '[Décris ce que montre cette carte, cette vidéo ou ce PDF.]',
-    '[Décrire précisément la méthode et la réalisation.]',
-    '[Indique le résultat obtenu et l’intérêt du livrable.]',
-    ['À compléter']
-  ));
+  return Array.from(
+    { length: count },
+    (_, index) => mediaItem(
+      `${projectTitle} — livrable ${index + 1}`,
+      '[Décrire ce que montre ce livrable.]',
+      '[Décrire précisément la méthode et la réalisation.]',
+      '[Indiquer le résultat obtenu et l’intérêt du livrable.]',
+      ['À compléter'],
+      ['À compléter'],
+      []
+    )
+  );
 }
 
 const MEDIA_DETAILS = {
@@ -636,11 +653,19 @@ const MEDIA_DETAILS = {
     `Le SDIS dispose d’une base cartographique homogène, réutilisable et plus facile à actualiser pour produire de nouveaux plans muraux ainsi que de nouveaux atlas.`,
 
     [
-      'QGIS',
-      'BD TOPO',
+      'QGIS'
+    ],
+
+    [
+      'Construction d’un fond vectoriel',
+      'Hiérarchie visuelle',
       'Symbologie',
-      'Étiquetage',
-      'Mise en page'
+      'Étiquetage multi-échelle'
+    ],
+
+    [
+      'BD TOPO',
+      'Données métiers du SDIS'
     ]
   ),
 
@@ -654,11 +679,21 @@ const MEDIA_DETAILS = {
     `La production obtenue est plus homogène et reproductible. Une modification du référentiel ou de la mise en page peut être répercutée sans reprendre manuellement chaque commune.`,
 
     [
-      'QGIS',
+      'QGIS'
+    ],
+
+    [
       'Atlas QGIS',
-      'Expressions',
-      'Mises en page',
+      'Expressions dynamiques',
+      'Filtres par commune',
+      'Mises en page automatisées',
       'Export PDF'
+    ],
+
+    [
+      'Communes',
+      'Grille de mise en page',
+      'Référentiel cartographique'
     ]
   ),
 
@@ -675,9 +710,17 @@ const MEDIA_DETAILS = {
       'QGIS Model Builder',
       'Python',
       'PyQGIS',
-      'PyPDF',
-      'Automatisation'
-    ]
+      'PyPDF'
+    ],
+
+    [
+      'Chaîne de traitements',
+      'Export automatisé',
+      'Assemblage de PDF',
+      'Suppression des étapes manuelles sous Excel'
+    ],
+
+    []
   ),
 
   mediaItem(
@@ -691,270 +734,468 @@ const MEDIA_DETAILS = {
 
     [
       'QGIS',
-      'PostGIS',
-      'Structuration des données',
-      'Sectorisation'
+      'Lizmap'
+    ],
+
+    [
+      'Structuration des couches',
+      'Symbologie catégorisée',
+      'Diffusion WebSIG'
+    ],
+
+    [
+      'Secteurs opérationnels',
+      'Centres de secours'
     ]
   ),
 
   mediaItem(
     'Calcul et représentation des isochrones',
 
-    `Cette démonstration présente des zones d’accessibilité calculées depuis différents points de départ selon plusieurs temps de parcours. Les classes permettent de comparer rapidement les secteurs les mieux ou les moins bien desservis.`,
+    `Cette démonstration présente des isochrones calculés à partir de la couche des centres de secours. Les zones représentent les secteurs accessibles selon plusieurs temps de parcours et permettent de comparer la couverture du territoire.`,
 
-    `La méthode comprend la préparation des points de départ, le paramétrage des calculs de réseau, la classification des temps de parcours et la mise en forme des résultats dans QGIS.`,
+    `Les isochrones sont générés dans QGIS avec l’extension ORS Tools, à partir des points correspondant aux centres de secours. Les résultats sont ensuite classés, mis en forme puis publiés dans Lizmap pour une consultation interactive.`,
 
-    `Le résultat facilite la comparaison de la couverture du territoire et l’identification des secteurs présentant des écarts d’accessibilité.`,
+    `La visualisation dans Lizmap facilite la lecture des temps d’accès, la comparaison des zones couvertes par les centres de secours et le repérage des secteurs moins rapidement accessibles.`,
 
     [
       'QGIS',
+      'ORS Tools',
+      'Lizmap'
+    ],
+
+    [
       'Analyse de réseau',
-      'Isochrones',
-      'Analyse territoriale'
+      'Calcul des temps de parcours',
+      'Classification des isochrones',
+      'Publication WebSIG'
+    ],
+
+    [
+      'Couche des centres de secours',
+      'Réseau routier OpenRouteService'
     ]
   ),
 
   mediaItem(
     'Localisation des engins et diffusion dans Lizmap',
 
-    `Cette démonstration présente la représentation des engins et leur consultation dans un environnement WebSIG. Les symboles, les informations associées et les groupes de couches sont organisés pour une lecture rapide depuis un navigateur.`,
+    `Cette démonstration permet de visualiser la localisation et la répartition des engins, c’est-à-dire les véhicules et moyens mobilisés lors des interventions. La représentation permet de comprendre quels types d’engins sont présents dans les différents centres de secours.`,
 
-    `La diffusion repose sur la préparation du projet QGIS, l’utilisation de symboles adaptés, la structuration des données et le paramétrage de leur publication dans Lizmap.`,
+    `Le référentiel des engins est organisé dans QGIS, puis représenté par catégories à l’aide de symboles adaptés aux différents véhicules. Les informations sont ensuite publiées dans Lizmap avec des fenêtres d’information permettant de consulter les caractéristiques associées.`,
 
-    `Les informations peuvent être consultées dans une interface unique sans ouvrir directement QGIS ni rechercher les données dans plusieurs fichiers distincts.`,
+    `La carte fournit une lecture rapide de la localisation des moyens opérationnels, de leur répartition entre les centres de secours et de la diversité des véhicules disponibles sur le territoire.`,
 
     [
       'QGIS',
-      'Lizmap',
-      'PostGIS',
-      'WebSIG',
-      'Symboles raster'
+      'Lizmap'
+    ],
+
+    [
+      'Structuration attributaire',
+      'Symbologie catégorisée',
+      'Webmapping',
+      'Fenêtres d’information'
+    ],
+
+    [
+      'Référentiel des engins',
+      'Centres de secours'
     ]
   )
 ],
 
   sebikotane: [
     mediaItem(
-      'Diagnostic et planification territoriale de Sébikotane',
+    'Diagnostic et planification territoriale de Sébikotane',
 
-      `Cette présentation synthétise les principaux résultats du diagnostic territorial et du document de planification de la commune de Sébikotane. Elle réunit une sélection de cartes, de constats et de propositions permettant de comprendre les dynamiques du territoire.`,
+    `Cette présentation synthétise les principaux résultats du diagnostic territorial et du document de planification de la commune de Sébikotane. Elle réunit une sélection de cartes, de constats et de propositions permettant de comprendre les dynamiques du territoire.`,
 
-      `Le livrable rassemble les éléments les plus visuels : évolution de l’occupation du sol, organisation des équipements et des réseaux, principaux enjeux territoriaux, orientations stratégiques et projets prioritaires.`,
+    `Le livrable rassemble les éléments les plus visuels : évolution de l’occupation du sol, organisation des équipements et des réseaux, principaux enjeux territoriaux, orientations stratégiques et projets prioritaires.`,
 
-      `La sélection met en évidence la progression du bâti, la pression exercée sur les espaces agricoles et naturels, les besoins en équipements ainsi que les actions proposées pour accompagner le développement communal.`,
+    `La sélection met en évidence la progression du bâti, la pression exercée sur les espaces agricoles et naturels, les besoins en équipements ainsi que les actions proposées pour accompagner le développement communal.`,
 
-      [
-        'QGIS',
-        'Diagnostic territorial',
-        'Analyse multitemporelle',
-        'Planification stratégique',
-        'Cartographie de synthèse'
-      ]
-    )
+    [
+      'QGIS',
+      'KoboCollect',
+      'PowerPoint'
+    ],
+
+    [
+      'Enquêtes de terrain',
+      'Diagnostic territorial',
+      'Analyse FFOM',
+      'Cartographie thématique'
+    ],
+
+    [
+      'Données d’enquête',
+      'Équipements géolocalisés',
+      'Occupation du sol'
+    ]
+  )
   ],
 
   hlm: [
     mediaItem(
-      'Diagnostic territorial de la commune des HLM',
+    'Diagnostic territorial de la commune des HLM',
 
-      `Cette présentation propose une sélection synthétique des éléments les plus lisibles du diagnostic territorial de la commune des HLM. Elle présente l’organisation urbaine, les équipements, les activités économiques et les principaux enjeux identifiés.`,
+    `Cette présentation propose une sélection synthétique des éléments les plus lisibles du diagnostic territorial de la commune des HLM. Elle présente l’organisation urbaine, les équipements, les activités économiques et les principaux enjeux identifiés.`,
 
-      `Le document regroupe les cartes et graphiques les plus pertinents, complétés par une synthèse visuelle des constats portant sur les services à la population, la santé, l’éducation, la sécurité, les infrastructures et la gouvernance locale.`,
+    `Le document regroupe les cartes et graphiques les plus pertinents, complétés par une synthèse visuelle des constats portant sur les services à la population, la santé, l’éducation, la sécurité, les infrastructures et la gouvernance locale.`,
 
-      `La sélection permet de comprendre rapidement les caractéristiques du territoire, ses principaux points d’appui et les domaines d’intervention prioritaires, sans reprendre l’intégralité du rapport initial.`,
+    `La sélection permet de comprendre rapidement les caractéristiques du territoire, ses principaux points d’appui et les domaines d’intervention prioritaires, sans reprendre l’intégralité du rapport initial.`,
 
-      [
-        'QGIS',
-        'KoboCollect',
-        'Diagnostic territorial',
-        'Cartographie des équipements',
-        'Analyse urbaine'
-      ]
-    )
+    [
+      'QGIS',
+      'KoboCollect',
+      'PowerPoint'
+    ],
+
+    [
+      'Collecte de terrain',
+      'Diagnostic territorial',
+      'Analyse FFOM',
+      'Cartographie des équipements'
+    ],
+
+    [
+      'Données d’enquête',
+      'Équipements géolocalisés'
+    ]
+  )
   ],
 
   publicis: [
     mediaItem(
-      'Synthèse du projet et expérimentation BigQuery',
+    'Synthèse du projet et expérimentation BigQuery',
 
-      `Cette vidéo présente l’ensemble de l’étude consacrée à l’intégration de l’IA agentique dans les processus géomarketing. Elle réunit le diagnostic des besoins, la comparaison des solutions, la grille de décision et l’expérimentation menée dans BigQuery.`,
+    `Cette vidéo présente l’ensemble de l’étude consacrée à l’intégration de l’IA agentique dans les processus géomarketing. Elle réunit le diagnostic des besoins, la comparaison des solutions, la grille de décision et l’expérimentation menée dans BigQuery.`,
 
-      `Les solutions ont été comparées selon des critères techniques et organisationnels : connectivité, facilité de déploiement, sécurité, gouvernance, capacité d’automatisation et maintien du contrôle humain. Une expérimentation a ensuite permis d’observer le comportement d’un agent lors de l’exploration et du contrôle d’un jeu de données.`,
+    `Les solutions ont été comparées selon des critères techniques et organisationnels : connectivité, facilité de déploiement, sécurité, gouvernance, capacité d’automatisation et maintien du contrôle humain. Une expérimentation a ensuite permis d’observer le comportement d’un agent lors de l’exploration et du contrôle d’un jeu de données.`,
 
-      `La synthèse met en évidence l’intérêt d’une architecture combinant plusieurs technologies spécialisées. Elle confirme également que l’assistance agentique peut accélérer l’analyse initiale des données, sous réserve d’une validation humaine des traitements et des interprétations.`,
+    `La synthèse met en évidence l’intérêt d’une architecture combinant plusieurs technologies spécialisées. Elle confirme également que l’assistance agentique peut accélérer l’analyse initiale des données, sous réserve d’une validation humaine des traitements et des interprétations.`,
 
-      [
-        'BigQuery',
-        'IA agentique',
-        'Grille multicritère',
-        'Benchmark',
-        'Data quality',
-        'Automatisation'
-      ]
-    )
+    [
+      'BigQuery'
+    ],
+
+    [
+      'Analyse des besoins',
+      'Benchmark',
+      'Grille multicritère',
+      'Expérimentation agentique'
+    ],
+
+    [
+      'Jeu de données test'
+    ]
+  )
   ],
 
   adeupa: [
     mediaItem(
-      'Analyse territoriale des données Waze',
+    'Analyse territoriale des données Waze',
 
-      `Ce livrable présente une chaîne complète d’exploitation des données Waze for Cities, depuis leur récupération jusqu’à leur analyse et leur visualisation. Il regroupe les principaux résultats dans un document unique et cohérent.`,
+    `Ce livrable présente une chaîne complète d’exploitation des données Waze for Cities, depuis leur récupération jusqu’à leur analyse et leur visualisation. Il regroupe les principaux résultats dans un document unique et cohérent.`,
 
-      `La présentation réunit la méthode de collecte automatisée des fichiers JSON, leur structuration, les analyses spatiales et temporelles du trafic ainsi que des captures du tableau de bord cartographique développé avec Leaflet et Chart.js.`,
+    `La présentation réunit la méthode de collecte automatisée des fichiers JSON, leur structuration, les analyses spatiales et temporelles du trafic ainsi que des captures du tableau de bord cartographique développé avec Leaflet et Chart.js.`,
 
-      `L’ensemble montre comment les données Waze peuvent compléter les sources traditionnelles pour identifier les axes perturbés, analyser les congestions et rendre les résultats accessibles dans une interface interactive reproductible sur d’autres territoires.`,
+    `L’ensemble montre comment les données Waze peuvent compléter les sources traditionnelles pour identifier les axes perturbés, analyser les congestions et rendre les résultats accessibles dans une interface interactive reproductible sur d’autres territoires.`,
 
-      [
-        'Python',
-        'QGIS',
-        'R',
-        'JSON',
-        'Leaflet',
-        'Chart.js',
-        'Webmapping'
-      ]
-    )
+    [
+      'Python',
+      'QGIS',
+      'R',
+      'Leaflet',
+      'Chart.js'
+    ],
+
+    [
+      'Collecte automatisée',
+      'Analyse spatiale',
+      'Analyse temporelle',
+      'Webmapping'
+    ],
+
+    [
+      'Waze for Cities',
+      'JSON',
+      'BAAC'
+    ]
+  )
   ],
 
   sncf: [
     mediaItem(
-      'Étude prospective — profils et attractivité territoriale',
+    'Étude prospective — profils et attractivité territoriale',
 
-      `Ce livrable rassemble les principaux résultats de l’étude prospective menée sur le cadre de vie souhaité à l’horizon 2045–2050 dans le périmètre du projet LNOBPL. Il associe profils statistiques, graphiques de synthèse et cartographies territoriales.`,
+    `Ce livrable rassemble les principaux résultats de l’étude prospective menée sur le cadre de vie souhaité à l’horizon 2045–2050 dans le périmètre du projet LNOBPL. Il associe profils statistiques, graphiques de synthèse et cartographies territoriales.`,
 
-      `La présentation décrit les quatre profils de futurs actifs issus de l’analyse statistique, puis traduit leurs préférences en indicateurs normalisés, pondérés et combinés afin de cartographier le potentiel d’attractivité des territoires.`,
+    `La présentation décrit les quatre profils de futurs actifs issus de l’analyse statistique, puis traduit leurs préférences en indicateurs normalisés, pondérés et combinés afin de cartographier le potentiel d’attractivité des territoires.`,
 
-      `Le document met en évidence des aspirations résidentielles et des pratiques de mobilité contrastées. Il permet également d’identifier les territoires les plus adaptés à chaque profil et les conditions favorables à un usage accru du train.`,
+    `Le document met en évidence des aspirations résidentielles et des pratiques de mobilité contrastées. Il permet également d’identifier les territoires les plus adaptés à chaque profil et les conditions favorables à un usage accru du train.`,
 
-      [
-        'R',
-        'QGIS',
-        'ACM',
-        'CAH',
-        'Analyse multicritère',
-        'Prospective territoriale'
-      ]
-    )
+    [
+      'R',
+      'QGIS',
+      'Flourish',
+      'Google Forms'
+    ],
+
+    [
+      'Analyse descriptive',
+      'ACM',
+      'CAH',
+      'Analyse multicritère',
+      'Pondération'
+    ],
+
+    [
+      'Réponses au questionnaire',
+      'Indicateurs territoriaux'
+    ]
+  )
   ],
 
   gend: [
     mediaItem(
-      'Atlas départementaux — sélection de planches',
+    'Atlas départementaux — sélection de planches',
 
-      `Ce document réunit une sélection de planches issues des atlas départementaux réalisés pour le Var, le Doubs et la Sarthe. Les cartes, graphiques et chiffres clés proposent une lecture synthétique des caractéristiques et des enjeux de chaque territoire.`,
+    `Ce document réunit une sélection de planches issues des atlas départementaux réalisés pour le Var, le Doubs et la Sarthe. Les cartes, graphiques et chiffres clés proposent une lecture synthétique des caractéristiques et des enjeux de chaque territoire.`,
 
-      `La sélection couvre les principales dimensions physiques, environnementales, démographiques, économiques et infrastructurelles. Les indicateurs reposent sur un référentiel commun et une charte graphique homogène afin de faciliter la comparaison entre départements.`,
+    `La sélection couvre les principales dimensions physiques, environnementales, démographiques, économiques et infrastructurelles. Les indicateurs reposent sur un référentiel commun et une charte graphique homogène afin de faciliter la comparaison entre départements.`,
 
-      `Le livrable permet de comprendre rapidement les dynamiques territoriales utiles à l’appropriation d’un nouveau département, tout en illustrant une méthode reproductible pouvant être étendue à d’autres territoires.`,
+    `Le livrable permet de comprendre rapidement les dynamiques territoriales utiles à l’appropriation d’un nouveau département, tout en illustrant une méthode reproductible pouvant être étendue à d’autres territoires.`,
 
-      [
-        'QGIS',
-        'R',
-        'SQL',
-        'Open data',
-        'Cartographie thématique',
-        'Datavisualisation',
-        'Reproductibilité'
-      ]
-    )
+    [
+      'QGIS',
+      'R',
+      'SQL',
+      'Canva',
+      'Flourish'
+    ],
+
+    [
+      'Cartographie thématique',
+      'Datavisualisation',
+      'Standardisation des planches',
+      'Reproductibilité'
+    ],
+
+    [
+      'Données ouvertes nationales'
+    ]
+  )
   ],
 
   realisations: [
     mediaItem(
-      'Tramway de Bordeaux : quelles stations concentrent le plus d’équipements ?',
+    'Tramway de Bordeaux : quelles stations concentrent le plus d’équipements ?',
 
-      `Cette carte analyse l’accessibilité des équipements autour des stations du tramway de Bordeaux Métropole. Elle croise le réseau de transport, la fréquentation des arrêts et les équipements accessibles dans un rayon de 500 mètres afin d’identifier les stations occupant une place centrale dans la vie urbaine.`,
+    `Cette carte analyse l’accessibilité des équipements autour des stations du tramway de Bordeaux Métropole. Elle croise le réseau de transport, la fréquentation des arrêts et les équipements accessibles dans un rayon de 500 mètres afin d’identifier les stations occupant une place centrale dans la vie urbaine.`,
 
-      `La réalisation associe la préparation des données du réseau et des équipements, des traitements de proximité et une représentation combinant carte, graphiques, chiffres clés et hiérarchisation des stations.`,
+    `La réalisation associe la préparation des données du réseau et des équipements, des traitements de proximité et une représentation combinant carte, graphiques, chiffres clés et hiérarchisation des stations.`,
 
-      `La réalisation permet de comparer les lignes et de repérer les stations disposant de la plus forte concentration d’équipements, notamment Gambetta, Grand Théâtre et Sainte-Catherine.`,
+    `La réalisation permet de comparer les lignes et de repérer les stations disposant de la plus forte concentration d’équipements, notamment Gambetta, Grand Théâtre et Sainte-Catherine.`,
 
-      ['QGIS', 'Données GTFS', 'Analyse de proximité', 'Cartographie des transports', 'Datavisualisation']
-    ),
+    [
+      'QGIS'
+    ],
 
-    mediaItem(
-      'Émissions résidentielles et densité de population en Nouvelle-Aquitaine',
+    [
+      'Analyse de proximité',
+      'Cartographie des transports',
+      'Datavisualisation'
+    ],
 
-      `Cette analyse bivariée croise les émissions résidentielles de gaz à effet de serre par habitant avec la densité de population des communes de Nouvelle-Aquitaine. Elle cherche à déterminer si les territoires les plus densément peuplés sont également les plus émetteurs.`,
-
-      `La méthode repose sur la jointure des données de l’ADEME et de l’INSEE aux communes, la discrétisation des deux indicateurs en trois classes et la construction d’une légende bivariée comportant neuf combinaisons.`,
-
-      `La carte révèle des situations territoriales contrastées. Certains espaces cumulent densité et émissions élevées, tandis que Bordeaux présente une forte densité mais des émissions résidentielles relativement modérées.`,
-
-      ['QGIS', 'Cartographie bivariée', 'Analyse environnementale', 'ADEME', 'INSEE']
-    ),
-
-    mediaItem(
-      'Couverture numérique : un script reproductible pour tous les départements',
-
-      `Cette réalisation repose sur un script Python paramétrable permettant d’étudier la couverture numérique d’un département. Il produit une carte de la part des locaux raccordables à la fibre optique, une carte de la couverture territoriale en 5G et une synthèse bivariée croisant les deux indicateurs.`,
-
-      `La chaîne de traitement Python couvre l’importation des données, la sélection du département, la gestion des projections, la classification des indicateurs, la création des palettes, la génération des cartes simples et la construction de la carte bivariée.`,
-
-      `La méthode n’est pas limitée à l’Isère. En modifiant le paramètre du département, le même traitement peut être relancé pour produire automatiquement les cartes FTTH et 5G de tout département disposant des données nécessaires.`,
-
-      ['Python', 'GeoPandas', 'Matplotlib', 'Contextily', 'Automatisation', 'Cartographie reproductible']
-    ),
+    [
+      'GTFS',
+      'Équipements urbains'
+    ]
+  ),
 
     mediaItem(
-      'Boulodromes, gymnases et profils d’âge : une lecture par cartogrammes',
+    'Émissions résidentielles et densité de population en Nouvelle-Aquitaine',
 
-      `Cette étude confronte la répartition des boulodromes et des salles multisports avec celle des jeunes de 15 à 29 ans et des personnes âgées de 60 à 74 ans. Elle combine une représentation bivariée des profils démographiques avec une déformation des EPCI selon leur niveau d’équipement.`,
+    `Cette analyse bivariée croise les émissions résidentielles de gaz à effet de serre par habitant avec la densité de population des communes de Nouvelle-Aquitaine. Elle cherche à déterminer si les territoires les plus densément peuplés sont également les plus émetteurs.`,
 
-      `La méthode comprend la préparation des données, la classification des variables, la création de neuf catégories bivariées et la réalisation de cartogrammes représentant l’offre d’équipements sportifs.`,
+    `La méthode repose sur la jointure des données de l’ADEME et de l’INSEE aux communes, la discrétisation des deux indicateurs en trois classes et la construction d’une légende bivariée comportant neuf combinaisons.`,
 
-      `L’analyse permet de dépasser certains clichés sur les pratiques sportives. Elle fait notamment ressortir une présence relative importante des boulodromes dans plusieurs territoires peu peuplés, au-delà des grandes métropoles généralement associées à cette pratique.`,
+    `La carte révèle des situations territoriales contrastées. Certains espaces cumulent densité et émissions élevées, tandis que Bordeaux présente une forte densité mais des émissions résidentielles relativement modérées.`,
 
-      ['QGIS', 'Cartogramme', 'Cartographie bivariée', 'Quantiles', 'Analyse démographique']
-    ),
+    [
+      'QGIS'
+    ],
 
-    mediaItem(
-      'Évolution du taux de chômage en France par EPCI, de 2006 à 2021',
+    [
+      'Cartographie bivariée',
+      'Discrétisation par quantiles',
+      'Analyse environnementale'
+    ],
 
-      `Cette série cartographique présente l’évolution annuelle du taux de chômage à l’échelle des intercommunalités françaises entre 2006 et 2021.`,
-
-      `La série repose sur la préparation des données, la définition d’une classification commune et la production automatisée des seize cartes nécessaires à la comparaison temporelle.`,
-
-      `La représentation en petits multiples permet de suivre rapidement les périodes de hausse et de diminution du chômage, tout en observant les contrastes territoriaux persistants entre les EPCI.`,
-
-      ['R', 'Cartographie temporelle', 'Petits multiples', 'Analyse statistique', 'INSEE']
-    ),
-
-    mediaItem(
-      'Où vont travailler les habitants des Pays de la Loire ?',
-
-      `Cette carte représente les déplacements domicile-travail entre les communes des Pays de la Loire. L’épaisseur des lignes indique l’intensité des flux, tandis que les cercles représentent le nombre d’entreprises actives dans chaque commune.`,
-
-      `La réalisation repose sur la préparation de la matrice origine-destination, la génération des liaisons entre les communes et la hiérarchisation visuelle des flux, des pôles d’emploi et des principaux indicateurs.`,
-
-      `La carte met en évidence le rôle structurant de Nantes, Angers et Le Mans ainsi que l’organisation multipolaire des déplacements professionnels dans la région.`,
-
-      ['QGIS', 'Carte de flux', 'Matrice origine-destination', 'Analyse des mobilités', 'INSEE']
-    ),
+    [
+      'ADEME',
+      'INSEE'
+    ]
+  ),
 
     mediaItem(
-      'Urbanisation et recul des milieux naturels dans les Niayes entre 1984 et 2024',
+    'Couverture numérique : un script reproductible pour tous les départements',
 
-      `Cette étude de télédétection analyse l’évolution de la zone humide des Niayes sur une période de quarante ans à partir d’images satellitaires Landsat. Elle associe les indices NDVI et NDWI, une classification de l’occupation du sol et une détection des changements.`,
+    `Cette réalisation repose sur un script Python paramétrable permettant d’étudier la couverture numérique d’un département. Il produit une carte de la part des locaux raccordables à la fibre optique, une carte de la couverture territoriale en 5G et une synthèse bivariée croisant les deux indicateurs.`,
 
-      `La méthode comprend le traitement des images satellitaires de 1984 et 2024, le calcul des indices de végétation et d’humidité, la classification de l’occupation du sol et la comparaison des deux périodes.`,
+    `La chaîne de traitement Python couvre l’importation des données, la sélection du département, la gestion des projections, la classification des indicateurs, la création des palettes, la génération des cartes simples et la construction de la carte bivariée.`,
 
-      `Les résultats montrent une diminution de la couverture végétale, une progression des espaces urbanisés, une fragmentation des zones agricoles et des transformations importantes dans une grande partie de la zone humide.`,
+    `La méthode n’est pas limitée à l’Isère. En modifiant le paramètre du département, le même traitement peut être relancé pour produire automatiquement les cartes FTTH et 5G de tout département disposant des données nécessaires.`,
 
-      ['QGIS', 'Télédétection', 'Landsat', 'NDVI', 'NDWI', 'Classification']
-    ),
+    [
+      'Python',
+      'GeoPandas',
+      'Matplotlib',
+      'Contextily'
+    ],
+
+    [
+      'Script paramétrable',
+      'Classification',
+      'Cartographie bivariée',
+      'Export automatisé'
+    ],
+
+    [
+      'Données FTTH',
+      'Données 5G',
+      'Limites administratives'
+    ]
+  ),
 
     mediaItem(
-      'Nantes à l’échelle du bâtiment : densité de population et revenus des ménages',
+    'Boulodromes, gymnases et profils d’âge : une lecture par cartogrammes',
 
-      `Cette réalisation affine la lecture des données démographiques en répartissant la population à l’échelle des bâtiments résidentiels. Une seconde carte croise cette estimation avec les revenus des ménages afin de faire apparaître les contrastes internes à la ville de Nantes.`,
+    `Cette étude confronte la répartition des boulodromes et des salles multisports avec celle des jeunes de 15 à 29 ans et des personnes âgées de 60 à 74 ans. Elle combine une représentation bivariée des profils démographiques avec une déformation des EPCI selon leur niveau d’équipement.`,
 
-      `La réalisation repose sur la préparation des données de l’INSEE et de la BD TOPO, la sélection des bâtiments résidentiels, la ventilation spatiale de la population et la conception des deux représentations finales.`,
+    `La méthode comprend la préparation des données, la classification des variables, la création de neuf catégories bivariées et la réalisation de cartogrammes représentant l’offre d’équipements sportifs.`,
 
-      `La méthode permet de dépasser les limites des statistiques agrégées à des mailles trop larges et de visualiser plus précisément les secteurs denses ainsi que les différences de revenus à l’intérieur de la ville.`,
+    `L’analyse permet de dépasser certains clichés sur les pratiques sportives. Elle fait notamment ressortir une présence relative importante des boulodromes dans plusieurs territoires peu peuplés, au-delà des grandes métropoles généralement associées à cette pratique.`,
 
-      ['QGIS', 'Ventilation spatiale', 'BD TOPO', 'INSEE', 'Analyse démographique']
-    )
+    [
+      'QGIS'
+    ],
+
+    [
+      'Cartogramme',
+      'Cartographie bivariée',
+      'Quantiles',
+      'Analyse démographique'
+    ],
+
+    [
+      'INSEE',
+      'Base des équipements sportifs'
+    ]
+  ),
+
+    mediaItem(
+    'Évolution du taux de chômage en France par EPCI, de 2006 à 2021',
+
+    `Cette série cartographique présente l’évolution annuelle du taux de chômage à l’échelle des intercommunalités françaises entre 2006 et 2021.`,
+
+    `La série repose sur la préparation des données, la définition d’une classification commune et la production automatisée des seize cartes nécessaires à la comparaison temporelle.`,
+
+    `La représentation en petits multiples permet de suivre rapidement les périodes de hausse et de diminution du chômage, tout en observant les contrastes territoriaux persistants entre les EPCI.`,
+
+    [
+      'R'
+    ],
+
+    [
+      'Série temporelle',
+      'Petits multiples',
+      'Classification commune'
+    ],
+
+    [
+      'INSEE'
+    ]
+  ),
+
+    mediaItem(
+    'Où vont travailler les habitants des Pays de la Loire ?',
+
+    `Cette carte représente les déplacements domicile-travail entre les communes des Pays de la Loire. L’épaisseur des lignes indique l’intensité des flux, tandis que les cercles représentent le nombre d’entreprises actives dans chaque commune.`,
+
+    `La réalisation repose sur la préparation de la matrice origine-destination, la génération des liaisons entre les communes et la hiérarchisation visuelle des flux, des pôles d’emploi et des principaux indicateurs.`,
+
+    `La carte met en évidence le rôle structurant de Nantes, Angers et Le Mans ainsi que l’organisation multipolaire des déplacements professionnels dans la région.`,
+
+    [
+      'QGIS'
+    ],
+
+    [
+      'Matrice origine-destination',
+      'Carte de flux',
+      'Hiérarchisation visuelle'
+    ],
+
+    [
+      'INSEE — mobilités professionnelles',
+      'Entreprises actives'
+    ]
+  ),
+
+    mediaItem(
+    'Urbanisation et recul des milieux naturels dans les Niayes entre 1984 et 2024',
+
+    `Cette étude de télédétection analyse l’évolution de la zone humide des Niayes sur une période de quarante ans à partir d’images satellitaires Landsat. Elle associe les indices NDVI et NDWI, une classification de l’occupation du sol et une détection des changements.`,
+
+    `La méthode comprend le traitement des images satellitaires de 1984 et 2024, le calcul des indices de végétation et d’humidité, la classification de l’occupation du sol et la comparaison des deux périodes.`,
+
+    `Les résultats montrent une diminution de la couverture végétale, une progression des espaces urbanisés, une fragmentation des zones agricoles et des transformations importantes dans une grande partie de la zone humide.`,
+
+    [
+      'QGIS'
+    ],
+
+    [
+      'Télédétection',
+      'NDVI',
+      'NDWI',
+      'Classification de l’occupation du sol',
+      'Détection des changements'
+    ],
+
+    [
+      'Landsat 4–5',
+      'Landsat 9'
+    ]
+  ),
+
+    mediaItem(
+    'Nantes à l’échelle du bâtiment : densité de population et revenus des ménages',
+
+    `Cette réalisation affine la lecture des données démographiques en répartissant la population à l’échelle des bâtiments résidentiels. Une seconde carte croise cette estimation avec les revenus des ménages afin de faire apparaître les contrastes internes à la ville de Nantes.`,
+
+    `La réalisation repose sur la préparation des données de l’INSEE et de la BD TOPO, la sélection des bâtiments résidentiels, la ventilation spatiale de la population et la conception des deux représentations finales.`,
+
+    `La méthode permet de dépasser les limites des statistiques agrégées à des mailles trop larges et de visualiser plus précisément les secteurs denses ainsi que les différences de revenus à l’intérieur de la ville.`,
+
+    [
+      'QGIS'
+    ],
+
+    [
+      'Ventilation spatiale',
+      'Croisement de données',
+      'Cartographie à l’échelle du bâtiment'
+    ],
+
+    [
+      'INSEE',
+      'BD TOPO'
+    ]
+  )
   ]
 };
 
@@ -966,7 +1207,9 @@ function getMediaInfo(id, index) {
     '[Description à compléter.]',
     '[Méthode et réalisation à compléter.]',
     '[Résultat à compléter.]',
-    ['À compléter']
+    ['À compléter'],
+    ['À compléter'],
+    []
   );
 }
 
@@ -1627,9 +1870,19 @@ function ensureMediaDescriptionUI() {
         <p id="lb-media-result" class="lb-info-text"></p>
       </section>
 
-      <section class="lb-info-section">
-        <span class="lb-info-label">Outils utilisés</span>
-        <div id="lb-media-tools" class="lb-media-tools"></div>
+      <section id="lb-tools-section" class="lb-info-section">
+        <span class="lb-info-label">Outils mobilisés</span>
+        <div id="lb-media-tools" class="lb-media-tags"></div>
+      </section>
+
+      <section id="lb-methods-section" class="lb-info-section">
+        <span class="lb-info-label">Méthodes clés</span>
+        <div id="lb-media-methods" class="lb-media-tags"></div>
+      </section>
+
+      <section id="lb-data-section" class="lb-info-section">
+        <span class="lb-info-label">Données principales</span>
+        <div id="lb-media-data" class="lb-media-tags"></div>
       </section>
     </div>
   `;
@@ -2053,14 +2306,14 @@ function ensureMediaDescriptionUI() {
       line-height: 1.75;
     }
 
-    .lb-media-tools {
+    .lb-media-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 0.35rem;
       margin-top: 0.65rem;
     }
 
-    .lb-media-tool {
+    .lb-media-tag {
       padding: 0.25rem 0.55rem;
       border: 1px solid var(--ink3);
       font-family:
@@ -2145,37 +2398,99 @@ function fillMediaDescription(id, index, media) {
   ensureMediaDescriptionUI();
 
   const info = getMediaInfo(id, index);
+
   const typeLabels = {
     image: 'Carte ou image',
     video: 'Vidéo',
     pdf: 'Document PDF'
   };
 
-  document.getElementById('lb-media-type').textContent =
-    typeLabels[media.type] || 'Livrable';
+  document
+    .getElementById('lb-media-type')
+    .textContent =
+      typeLabels[media.type] ||
+      'Livrable';
 
-  document.getElementById('lb-media-title').textContent =
-    info.title || media.name || 'Livrable';
+  document
+    .getElementById('lb-media-title')
+    .textContent =
+      info.title ||
+      media.name ||
+      'Livrable';
 
-  document.getElementById('lb-media-file').textContent =
-    media.name && media.name !== info.title ? `Fichier : ${media.name}` : '';
+  document
+    .getElementById('lb-media-file')
+    .textContent =
+      media.name &&
+      media.name !== info.title
+        ? `Fichier : ${media.name}`
+        : '';
 
-  document.getElementById('lb-media-description').textContent =
-    info.description || 'Description à compléter.';
+  document
+    .getElementById('lb-media-description')
+    .textContent =
+      info.description ||
+      'Description à compléter.';
 
-  document.getElementById('lb-media-role').textContent =
-    info.role || 'Méthode et réalisation à compléter.';
+  document
+    .getElementById('lb-media-role')
+    .textContent =
+      info.role ||
+      'Méthode et réalisation à compléter.';
 
-  document.getElementById('lb-media-result').textContent =
-    info.result || 'Résultat à compléter.';
+  document
+    .getElementById('lb-media-result')
+    .textContent =
+      info.result ||
+      'Résultat à compléter.';
 
-  const tools = Array.isArray(info.tools) && info.tools.length
-    ? info.tools
-    : ['À compléter'];
+  function renderMediaTags(
+    sectionId,
+    containerId,
+    values
+  ) {
+    const section =
+      document.getElementById(sectionId);
 
-  document.getElementById('lb-media-tools').innerHTML = tools
-    .map(tool => `<span class="lb-media-tool">${escapeHtml(tool)}</span>`)
-    .join('');
+    const container =
+      document.getElementById(containerId);
+
+    const cleanValues =
+      Array.isArray(values)
+        ? values.filter(Boolean)
+        : [];
+
+    section.style.display =
+      cleanValues.length
+        ? 'block'
+        : 'none';
+
+    container.innerHTML = cleanValues
+      .map(value => `
+        <span class="lb-media-tag">
+          ${escapeHtml(value)}
+        </span>
+      `)
+      .join('');
+  }
+
+  renderMediaTags(
+    'lb-tools-section',
+    'lb-media-tools',
+    info.tools
+  );
+
+  renderMediaTags(
+    'lb-methods-section',
+    'lb-media-methods',
+    info.methods
+  );
+
+  renderMediaTags(
+    'lb-data-section',
+    'lb-media-data',
+    info.data
+  );
 }
 
 function openMedia(id, i) {
