@@ -41,20 +41,30 @@ const DATA = {
 
     tags: [
       {
-        c: 'Logiciels',
-        t: ['QGIS', 'Lizmap', 'GeoConcept']
-      },
-      {
-        c: 'Développement',
-        t: ['Python', 'Model Builder']
+        c: 'Outils',
+        t: [
+          'QGIS',
+          'Lizmap',
+          'ORS Tools',
+          'Python',
+          'QGIS Model Builder'
+        ]
       },
       {
         c: 'Méthodes',
         t: [
-          'Automatisation',
-          'Structuration des données',
+          'Automatisation de traitements',
+          'Atlas automatisé',
           'Analyse de réseau',
-          'WebSIG'
+          'Publication WebSIG'
+        ]
+      },
+      {
+        c: 'Données',
+        t: [
+          'BD TOPO',
+          'Centres de secours',
+          'Référentiel des engins'
         ]
       }
     ],
@@ -126,8 +136,12 @@ const DATA = {
 
   tags: [
     {
-      c: 'Logiciels',
-      t: ['QGIS', 'KoboCollect']
+      c: 'Outils',
+      t: [
+        'QGIS',
+        'KoboCollect',
+        'PowerPoint'
+      ]
     },
     {
       c: 'Méthodes',
@@ -139,11 +153,12 @@ const DATA = {
       ]
     },
     {
-      c: 'Production',
+      c: 'Domaines',
       t: [
-        'Cartographie thématique',
-        'Programmation',
-        'Cadre logique'
+        'Aménagement',
+        'Environnement',
+        'Équipements',
+        'Gouvernance locale'
       ]
     }
   ],
@@ -184,8 +199,12 @@ const DATA = {
 
   tags: [
     {
-      c: 'Logiciels',
-      t: ['QGIS', 'KoboCollect']
+      c: 'Outils',
+      t: [
+        'QGIS',
+        'KoboCollect',
+        'PowerPoint'
+      ]
     },
     {
       c: 'Méthodes',
@@ -199,9 +218,10 @@ const DATA = {
     {
       c: 'Domaines',
       t: [
-        'Aménagement',
+        'Aménagement urbain',
+        'Services à la population',
         'Économie locale',
-        'Gouvernance territoriale'
+        'Gouvernance locale'
       ]
     }
   ],
@@ -230,7 +250,7 @@ const DATA = {
 
     title: 'IA agentique appliquée aux processus géomarketing',
 
-    period: '2025–2026',
+    period: '2025–2026 · Rennes',
 
     short: `Étude exploratoire visant à identifier comment l’IA agentique peut automatiser certaines tâches géomarketing tout en maintenant le contrôle et l’expertise humaine.`,
 
@@ -242,22 +262,21 @@ const DATA = {
 
     tags: [
       {
+        c: 'Outils',
+        t: [
+          'BigQuery',
+          'n8n',
+          'LangGraph',
+          'Python'
+        ]
+      },
+      {
         c: 'Méthodes',
         t: [
           'Analyse des besoins',
           'Benchmark',
           'Grille multicritère',
-          'Expérimentation'
-        ]
-      },
-      {
-        c: 'Technologies étudiées',
-        t: [
-          'BigQuery',
-          'n8n',
-          'LangGraph',
-          'Python',
-          'Claude Code'
+          'Expérimentation agentique'
         ]
       },
       {
@@ -265,8 +284,8 @@ const DATA = {
         t: [
           'IA agentique',
           'Géomarketing',
-          'Automatisation',
-          'Ingénierie des données'
+          'Qualité des données',
+          'Gouvernance des données'
         ]
       }
     ],
@@ -309,15 +328,11 @@ const DATA = {
 
     tags: [
       {
-        c: 'Logiciels',
-        t: ['QGIS', 'R', 'Python']
-      },
-      {
-        c: 'Développement web',
+        c: 'Outils',
         t: [
-          'HTML',
-          'CSS',
-          'JavaScript',
+          'QGIS',
+          'R',
+          'Python',
           'Leaflet',
           'Chart.js'
         ]
@@ -326,14 +341,17 @@ const DATA = {
         c: 'Méthodes',
         t: [
           'Collecte automatisée',
-          'Analyse de trafic',
+          'Analyse spatiale',
           'Analyse temporelle',
-          'Datavisualisation'
+          'Webmapping'
         ]
       },
       {
         c: 'Données',
-        t: ['Waze for Cities', 'JSON', 'BAAC']
+        t: [
+          'Waze for Cities',
+          'BAAC'
+        ]
       }
     ],
     imgs: [
@@ -373,25 +391,30 @@ const DATA = {
 
     tags: [
       {
-        c: 'Logiciels',
-        t: ['R', 'QGIS', 'Flourish', 'Google Forms']
+        c: 'Outils',
+        t: [
+          'R',
+          'QGIS',
+          'Google Forms'
+        ]
       },
       {
-        c: 'Analyse statistique',
+        c: 'Méthodes',
         t: [
           'Analyse descriptive',
           'ACM',
           'CAH',
-          'Classification'
+          'Classification',
+          'Analyse multicritère',
+          'Pondération'
         ]
       },
       {
-        c: 'Analyse territoriale',
+        c: 'Domaines',
         t: [
-          'Analyse multicritère',
-          'Indicateurs composites',
-          'Prospective',
-          'Mobilités'
+          'Prospective territoriale',
+          'Mobilités',
+          'Attractivité territoriale'
         ]
       }
     ],
@@ -432,25 +455,25 @@ const DATA = {
 
     tags: [
       {
-        c: 'Logiciels',
-        t: ['QGIS', 'R', 'SQL', 'Canva', 'Flourish']
+        c: 'Outils',
+        t: [
+          'QGIS',
+          'R'
+        ]
       },
       {
         c: 'Méthodes',
         t: [
-          'Open data',
           'Traitement de données',
           'Cartographie thématique',
-          'Datavisualisation'
+          'Datavisualisation',
+          'Standardisation cartographique'
         ]
       },
       {
-        c: 'Production',
+        c: 'Données',
         t: [
-          'Atlas départemental',
-          'Référentiel commun',
-          'Documentation technique',
-          'Reproductibilité'
+          'Données publiques nationales'
         ]
       }
     ],
@@ -495,8 +518,12 @@ const DATA = {
 
     tags: [
       {
-        c: 'Logiciels',
-        t: ['QGIS', 'R', 'Python']
+        c: 'Outils',
+        t: [
+          'QGIS',
+          'R',
+          'Python'
+        ]
       },
       {
         c: 'Méthodes',
@@ -717,7 +744,7 @@ const MEDIA_DETAILS = {
       'Chaîne de traitements',
       'Export automatisé',
       'Assemblage de PDF',
-      'Suppression des étapes manuelles sous Excel'
+      'Contrôle de l’ordre des documents'
     ],
 
     []
@@ -740,7 +767,7 @@ const MEDIA_DETAILS = {
     [
       'Structuration des couches',
       'Symbologie catégorisée',
-      'Diffusion WebSIG'
+      'Publication WebSIG'
     ],
 
     [
@@ -899,7 +926,7 @@ const MEDIA_DETAILS = {
 
     `Ce livrable présente une chaîne complète d’exploitation des données Waze for Cities, depuis leur récupération jusqu’à leur analyse et leur visualisation. Il regroupe les principaux résultats dans un document unique et cohérent.`,
 
-    `La présentation réunit la méthode de collecte automatisée des fichiers JSON, leur structuration, les analyses spatiales et temporelles du trafic ainsi que des captures du tableau de bord cartographique développé avec Leaflet et Chart.js.`,
+    `La présentation réunit la méthode de collecte automatisée des données Waze, leur structuration, les analyses spatiales et temporelles du trafic ainsi que des captures du tableau de bord cartographique développé avec Leaflet et Chart.js.`,
 
     `L’ensemble montre comment les données Waze peuvent compléter les sources traditionnelles pour identifier les axes perturbés, analyser les congestions et rendre les résultats accessibles dans une interface interactive reproductible sur d’autres territoires.`,
 
@@ -920,7 +947,6 @@ const MEDIA_DETAILS = {
 
     [
       'Waze for Cities',
-      'JSON',
       'BAAC'
     ]
   )
@@ -939,7 +965,6 @@ const MEDIA_DETAILS = {
     [
       'R',
       'QGIS',
-      'Flourish',
       'Google Forms'
     ],
 
@@ -970,10 +995,7 @@ const MEDIA_DETAILS = {
 
     [
       'QGIS',
-      'R',
-      'SQL',
-      'Canva',
-      'Flourish'
+      'R'
     ],
 
     [
@@ -984,7 +1006,7 @@ const MEDIA_DETAILS = {
     ],
 
     [
-      'Données ouvertes nationales'
+      'Données publiques nationales'
     ]
   )
   ],
@@ -1726,7 +1748,7 @@ function show(id, element) {
     ${renderGallery(id, d)}
 
     <div class="rp-hr"></div>
-    <span class="rp-lbl">Outils et méthodes</span>
+    <span class="rp-lbl">Outils, méthodes et ressources</span>
     ${tags}
 
     <a href="mailto:dembadiarietou@gmail.com" class="rp-btn">Contacter Diariétou →</a>
@@ -2948,8 +2970,66 @@ function ensureResizableProjectPanel() {
   restoreStoredWidth();
 }
 
+
+function normalizeVisibleProjectMetadata() {
+  function updateMenuItem(
+    id,
+    labelText,
+    subText
+  ) {
+    const item = [
+      ...document.querySelectorAll(
+        '.lp-item'
+      )
+    ].find(node => {
+      const action =
+        node.getAttribute('onclick') ||
+        '';
+
+      return action.includes(
+        `'${id}'`
+      );
+    });
+
+    if (!item) return;
+
+    const label =
+      item.querySelector('.lp-label');
+
+    const sub =
+      item.querySelector('.lp-sub');
+
+    if (label && labelText) {
+      label.textContent = labelText;
+    }
+
+    if (sub && subText) {
+      sub.textContent = subText;
+    }
+  }
+
+  updateMenuItem(
+    'sebikotane',
+    'Stage — Mairie de Sébikotane',
+    'Géomaticienne · Sénégal · 2021'
+  );
+
+  updateMenuItem(
+    'hlm',
+    'Stage — Commune des HLM',
+    'Géomaticienne · Dakar · 2020'
+  );
+
+  updateMenuItem(
+    'publicis',
+    'Publicis Connected Media',
+    'IA et géomarketing · Rennes · 2025–2026'
+  );
+}
+
 function initializePortfolioUI() {
   normalizeRealisationsMenu();
+  normalizeVisibleProjectMetadata();
   ensureRealisationsGalleryStyle();
   ensureMediaDescriptionUI();
   ensureResizableProjectPanel();
