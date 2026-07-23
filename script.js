@@ -66,10 +66,8 @@ const DATA = {
     'Fond de carte et plans muraux',
     'Atlas opérationnels automatisés',
     'Sectorisation opérationnelle',
-    'Analyses spatiales',
     'Isochrones et accessibilité',
-    'Engins et WebSIG Lizmap',
-    'Rapport de stage'
+    'Engins et WebSIG Lizmap'
   ]
 },
   sebikotane: {
@@ -649,22 +647,6 @@ const MEDIA_DETAILS = {
     ]
   ),
 
-  mediaItem(
-    'Analyses spatiales d’aide à la décision',
-
-    `Réalisation de traitements cartographiques permettant d’analyser des phénomènes territoriaux et opérationnels à partir de plusieurs sources de données.`,
-
-    `La méthode associe préparation des données, traitements spatiaux et conception de représentations adaptées, notamment des analyses multicritères, des cartes de densité et des cartes thématiques.`,
-
-    `Ces analyses transforment des données complexes en informations cartographiques plus lisibles et exploitables pour accompagner la réflexion du service.`,
-
-    [
-      'QGIS',
-      'Analyse multicritère',
-      'Cartographie thématique',
-      'Analyse spatiale'
-    ]
-  ),
 
   mediaItem(
     'Calcul et représentation des isochrones',
@@ -698,25 +680,6 @@ const MEDIA_DETAILS = {
       'PostGIS',
       'WebSIG',
       'Centralisation des données'
-    ]
-  )
-  ,
-  mediaItem(
-    'Rapport de stage — modernisation des processus SIG',
-
-    `Ce rapport présente le contexte de la mission, les besoins identifiés, la démarche de modernisation et les résultats obtenus pour les six processus SIG étudiés au SDIS de Maine-et-Loire.`,
-
-    `Le document structure les différentes étapes du projet : analyse de l’existant, organisation des données, conception du fond cartographique, automatisation des atlas, préparation des projets WebSIG et formalisation des méthodes.`,
-
-    `Le rapport fournit une synthèse complète de la mission, des choix techniques et des livrables réalisés. Une version publique peut être utilisée afin de préserver les informations internes ou sensibles.`,
-
-    [
-      'Rapport de stage',
-      'Méthodologie',
-      'QGIS',
-      'PostGIS',
-      'Lizmap',
-      'Python'
     ]
   )
 ],
@@ -1546,12 +1509,30 @@ function ensureMediaDescriptionUI() {
   layout.id = 'lb-layout';
   layout.addEventListener('click', event => event.stopPropagation());
 
+  const resizeHandle = document.createElement('button');
+  resizeHandle.id = 'lb-resize-handle';
+  resizeHandle.type = 'button';
+  resizeHandle.title = 'Tirer pour redimensionner le panneau';
+  resizeHandle.setAttribute(
+    'aria-label',
+    'Redimensionner le panneau de description'
+  );
+  resizeHandle.innerHTML = '<span aria-hidden="true">⋮</span>';
+
   const description = document.createElement('aside');
   description.id = 'lb-description';
   description.innerHTML = `
     <div class="lb-description-scroll">
-      <div id="lb-media-type" class="lb-media-type">Livrable</div>
-      <h2 id="lb-media-title" class="lb-media-title">Titre du livrable</h2>
+      <div class="lb-open-new-zone"></div>
+
+      <div id="lb-media-type" class="lb-media-type">
+        Livrable
+      </div>
+
+      <h2 id="lb-media-title" class="lb-media-title">
+        Titre du livrable
+      </h2>
+
       <div id="lb-media-file" class="lb-media-file"></div>
 
       <section class="lb-info-section">
@@ -1578,18 +1559,175 @@ function ensureMediaDescriptionUI() {
 
   stage.parentNode.insertBefore(layout, stage);
   layout.appendChild(stage);
+  layout.appendChild(resizeHandle);
   layout.appendChild(description);
-  description.querySelector('.lb-description-scroll').appendChild(openNew);
+
+  const openNewZone =
+    description.querySelector('.lb-open-new-zone');
+
+  openNew.target = '_blank';
+  openNew.rel = 'noopener noreferrer';
+  openNewZone.appendChild(openNew);
+
+  try {
+    const storedWidth = Number(
+      localStorage.getItem('portfolio-media-panel-width')
+    );
+
+    if (Number.isFinite(storedWidth) && storedWidth >= 280) {
+      layout.style.setProperty(
+        '--lb-info-width',
+        `${storedWidth}px`
+      );
+    }
+  } catch (error) {
+    // Le stockage local peut être désactivé dans certains navigateurs.
+  }
+
+  let startX = 0;
+  let startWidth = 0;
+  let currentWidth = 360;
+
+  function getPanelLimits() {
+    const layoutWidth =
+      layout.getBoundingClientRect().width;
+
+    return {
+      min: 280,
+      max: Math.max(
+        340,
+        Math.min(
+          700,
+          Math.round(layoutWidth * 0.58)
+        )
+      )
+    };
+  }
+
+  function resizeDescriptionPanel(event) {
+    if (
+      !resizeHandle.hasPointerCapture(event.pointerId)
+    ) {
+      return;
+    }
+
+    const limits = getPanelLimits();
+
+    currentWidth = Math.min(
+      limits.max,
+      Math.max(
+        limits.min,
+        startWidth + (startX - event.clientX)
+      )
+    );
+
+    layout.style.setProperty(
+      '--lb-info-width',
+      `${Math.round(currentWidth)}px`
+    );
+  }
+
+  function stopDescriptionResize(event) {
+    if (
+      resizeHandle.hasPointerCapture(event.pointerId)
+    ) {
+      resizeHandle.releasePointerCapture(
+        event.pointerId
+      );
+    }
+
+    document.body.classList.remove(
+      'lb-is-resizing'
+    );
+
+    try {
+      localStorage.setItem(
+        'portfolio-media-panel-width',
+        String(Math.round(currentWidth))
+      );
+    } catch (error) {
+      // Le stockage local peut être désactivé.
+    }
+  }
+
+  resizeHandle.addEventListener(
+    'pointerdown',
+    event => {
+      if (
+        window.matchMedia(
+          '(max-width: 900px)'
+        ).matches
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+
+      startX = event.clientX;
+      startWidth =
+        description.getBoundingClientRect().width;
+      currentWidth = startWidth;
+
+      resizeHandle.setPointerCapture(
+        event.pointerId
+      );
+
+      document.body.classList.add(
+        'lb-is-resizing'
+      );
+    }
+  );
+
+  resizeHandle.addEventListener(
+    'pointermove',
+    resizeDescriptionPanel
+  );
+
+  resizeHandle.addEventListener(
+    'pointerup',
+    stopDescriptionResize
+  );
+
+  resizeHandle.addEventListener(
+    'pointercancel',
+    stopDescriptionResize
+  );
+
+  resizeHandle.addEventListener(
+    'dblclick',
+    () => {
+      currentWidth = 360;
+
+      layout.style.setProperty(
+        '--lb-info-width',
+        '360px'
+      );
+
+      try {
+        localStorage.setItem(
+          'portfolio-media-panel-width',
+          '360'
+        );
+      } catch (error) {
+        // Le stockage local peut être désactivé.
+      }
+    }
+  );
 
   const style = document.createElement('style');
   style.id = 'media-description-styles';
   style.textContent = `
     #lb-layout {
-      width: min(1380px, 94vw);
-      height: min(790px, 84vh);
+      --lb-info-width: 360px;
+
+      width: min(1480px, 96vw);
+      height: min(850px, 90vh);
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
-      gap: 1px;
+      grid-template-columns:
+        minmax(320px, 1fr)
+        12px
+        var(--lb-info-width);
+      gap: 0;
       background: var(--line);
       border: 1px solid var(--line);
     }
@@ -1599,6 +1737,58 @@ function ensureMediaDescriptionUI() {
       height: 100%;
       min-width: 0;
       background: #0e0f10;
+    }
+
+    #lb-resize-handle {
+      position: relative;
+      z-index: 5;
+      width: 12px;
+      height: 100%;
+      padding: 0;
+      border: 0;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      background: #17191b;
+      color: var(--mist);
+      cursor: col-resize;
+      touch-action: none;
+    }
+
+    #lb-resize-handle span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1rem;
+      letter-spacing: -0.2em;
+      color: var(--mist);
+      transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    #lb-resize-handle:hover,
+    body.lb-is-resizing #lb-resize-handle {
+      background: #202326;
+    }
+
+    #lb-resize-handle:hover span,
+    body.lb-is-resizing #lb-resize-handle span {
+      color: var(--red);
+      transform:
+        translate(-50%, -50%)
+        scale(1.2);
+    }
+
+    body.lb-is-resizing {
+      cursor: col-resize !important;
+      user-select: none !important;
+    }
+
+    body.lb-is-resizing #lb-stage iframe,
+    body.lb-is-resizing #lb-stage video,
+    body.lb-is-resizing #lb-stage img {
+      pointer-events: none !important;
     }
 
     #lb-description {
@@ -1612,16 +1802,111 @@ function ensureMediaDescriptionUI() {
     .lb-description-scroll {
       height: 100%;
       overflow-y: auto;
-      padding: 2rem 1.5rem;
+      padding: 1.35rem 1.5rem 2rem;
+      box-sizing: border-box;
     }
 
-    .lb-description-scroll::-webkit-scrollbar { width: 6px; }
-    .lb-description-scroll::-webkit-scrollbar-thumb { background: var(--ink3); }
+    .lb-description-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .lb-description-scroll::-webkit-scrollbar-thumb {
+      background: var(--ink3);
+    }
+
+    .lb-open-new-zone {
+      position: sticky;
+      top: -1.35rem;
+      z-index: 8;
+      margin:
+        -1.35rem
+        -1.5rem
+        1.35rem;
+      padding:
+        1rem
+        1.5rem
+        1.15rem;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(
+          180deg,
+          #191b1e 0%,
+          #191b1e 82%,
+          rgba(25, 27, 30, 0.92) 100%
+        );
+      box-shadow:
+        0 10px 22px
+        rgba(0, 0, 0, 0.2);
+    }
+
+    #lb-description #lb-open-new {
+      display: none;
+      width: 100%;
+      min-height: 62px;
+      padding: 0.85rem 1rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-sizing: border-box;
+      border: 1px solid #ff566f;
+      border-radius: 4px;
+      background: var(--red);
+      color: #ffffff;
+      text-align: left;
+      text-decoration: none;
+      box-shadow:
+        0 8px 20px
+        rgba(180, 31, 58, 0.32);
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    }
+
+    #lb-description #lb-open-new:hover {
+      transform: translateY(-2px);
+      background: #d52848;
+      box-shadow:
+        0 12px 26px
+        rgba(180, 31, 58, 0.42);
+    }
+
+    .lb-open-new-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .lb-open-new-main {
+      font-family:
+        'IBM Plex Mono',
+        monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .lb-open-new-sub {
+      font-family:
+        'IBM Plex Sans',
+        sans-serif;
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .lb-open-new-arrow {
+      flex: 0 0 auto;
+      font-size: 1.4rem;
+      line-height: 1;
+    }
 
     .lb-media-type,
     .lb-info-label {
       display: block;
-      font-family: 'IBM Plex Mono', monospace;
+      font-family:
+        'IBM Plex Mono',
+        monospace;
       font-size: 0.52rem;
       color: var(--red);
       letter-spacing: 0.16em;
@@ -1630,7 +1915,9 @@ function ensureMediaDescriptionUI() {
 
     .lb-media-title {
       margin: 0.55rem 0 0.4rem;
-      font-family: 'IBM Plex Serif', serif;
+      font-family:
+        'IBM Plex Serif',
+        serif;
       font-size: 1.55rem;
       font-style: italic;
       line-height: 1.2;
@@ -1640,7 +1927,9 @@ function ensureMediaDescriptionUI() {
     .lb-media-file {
       padding-bottom: 1.1rem;
       border-bottom: 1px solid var(--line);
-      font-family: 'IBM Plex Mono', monospace;
+      font-family:
+        'IBM Plex Mono',
+        monospace;
       font-size: 0.5rem;
       color: var(--mist);
       overflow-wrap: anywhere;
@@ -1668,29 +1957,51 @@ function ensureMediaDescriptionUI() {
     .lb-media-tool {
       padding: 0.25rem 0.55rem;
       border: 1px solid var(--ink3);
-      font-family: 'IBM Plex Mono', monospace;
+      font-family:
+        'IBM Plex Mono',
+        monospace;
       font-size: 0.52rem;
       color: var(--white);
-    }
-
-    #lb-description #lb-open-new {
-      width: 100%;
-      margin-top: 1.25rem;
-      text-align: center;
-      box-sizing: border-box;
     }
 
     @media (max-width: 900px) {
       #lb-layout {
         width: 96vw;
-        height: 88vh;
+        height: 90vh;
         grid-template-columns: 1fr;
-        grid-template-rows: minmax(300px, 58%) minmax(0, 42%);
+        grid-template-rows:
+          minmax(300px, 58%)
+          minmax(0, 42%);
       }
 
-      #lb-description { border-top: 1px solid var(--line); }
-      .lb-description-scroll { padding: 1.25rem; }
-      .lb-media-title { font-size: 1.25rem; }
+      #lb-resize-handle {
+        display: none;
+      }
+
+      #lb-description {
+        border-top:
+          1px solid var(--line);
+      }
+
+      .lb-description-scroll {
+        padding: 1.15rem;
+      }
+
+      .lb-open-new-zone {
+        top: -1.15rem;
+        margin:
+          -1.15rem
+          -1.15rem
+          1.15rem;
+        padding:
+          0.85rem
+          1.15rem
+          1rem;
+      }
+
+      .lb-media-title {
+        font-size: 1.25rem;
+      }
     }
   `;
 
@@ -1763,19 +2074,56 @@ function openMedia(id, i) {
 
   ensureMediaDescriptionUI();
 
-  const lightbox = document.getElementById('lightbox');
-  const image = document.getElementById('lb-img');
-  const video = document.getElementById('lb-video');
-  const pdf = document.getElementById('lb-pdf');
-  const openNew = document.getElementById('lb-open-new');
+  const lightbox =
+    document.getElementById('lightbox');
+  const image =
+    document.getElementById('lb-img');
+  const video =
+    document.getElementById('lb-video');
+  const pdf =
+    document.getElementById('lb-pdf');
+  const openNew =
+    document.getElementById('lb-open-new');
 
   resetMediaViewer();
   fillMediaDescription(id, i, media);
+
   lightbox.classList.add('open');
+
+  const mediaLabel = {
+    image: 'l’image',
+    video: 'la vidéo',
+    pdf: 'le PDF'
+  }[media.type] || 'le livrable';
+
+  openNew.href = media.src;
+  openNew.target = '_blank';
+  openNew.rel = 'noopener noreferrer';
+  openNew.innerHTML = `
+    <span class="lb-open-new-copy">
+      <span class="lb-open-new-main">
+        Ouvrir en grand
+      </span>
+      <span class="lb-open-new-sub">
+        Afficher ${mediaLabel} dans un nouvel onglet
+      </span>
+    </span>
+
+    <span
+      class="lb-open-new-arrow"
+      aria-hidden="true"
+    >
+      ↗
+    </span>
+  `;
+  openNew.style.display = 'flex';
 
   if (media.type === 'image') {
     image.src = media.src;
-    image.alt = getMediaInfo(id, i).title || media.name || 'Image du projet';
+    image.alt =
+      getMediaInfo(id, i).title ||
+      media.name ||
+      'Image du projet';
     image.style.display = 'block';
     return;
   }
@@ -1783,17 +2131,21 @@ function openMedia(id, i) {
   if (media.type === 'video') {
     video.src = media.src;
     video.style.display = 'block';
+
     video.play().catch(() => {
-      // Certains navigateurs bloquent la lecture automatique.
+      // Certains navigateurs bloquent
+      // la lecture automatique.
     });
+
     return;
   }
 
   if (media.type === 'pdf') {
-    pdf.src = media.src + '#toolbar=1etnavpanes=0etscrollbar=1';
+    pdf.src =
+      media.src +
+      '#toolbar=1&navpanes=0&scrollbar=1';
+
     pdf.style.display = 'block';
-    openNew.href = media.src;
-    openNew.style.display = 'inline-block';
   }
 }
 
