@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <!-- INTRO -->
 <div id="intro">
@@ -74,8 +75,19 @@
     <div><div class="lp-label">Stage — HLM</div><div class="lp-sub">Géomaticien · Dakar · 2020</div></div>
   </div>
 
-  <!-- 2 · PROJETS UNIVERSITAIRES -->
-  <div class="lp-sec"><span class="num">2</span> Projets universitaires (commandes)</div>
+  <!-- 2 · RÉALISATIONS CARTOGRAPHIQUES -->
+  <div class="lp-sec"><span class="num">2</span> Réalisations cartographiques</div>
+  <div class="lp-item" onclick="show('r1',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 1</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r2',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 2</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r3',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 3</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r4',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 4</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r5',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 5</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r6',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 6</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r7',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 7</div><div class="lp-sub">[à compléter]</div></div></div>
+  <div class="lp-item" onclick="show('r8',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 8</div><div class="lp-sub">[à compléter]</div></div></div>
+
+  <!-- 3 · PROJETS UNIVERSITAIRES -->
+  <div class="lp-sec"><span class="num">3</span> Projets universitaires (commandes)</div>
   <div class="lp-item" onclick="show('publicis',this)">
     <div class="lp-dot" style="background:#E0913C"></div>
     <div><div class="lp-label">Publicis</div><div class="lp-sub">IA & géomarketing · 2025</div></div>
@@ -92,17 +104,6 @@
     <div class="lp-dot" style="background:#E0913C"></div>
     <div><div class="lp-label">Gendarmerie nationale</div><div class="lp-sub">Diagnostic territorial · 2025</div></div>
   </div>
-
-  <!-- 3 · AUTRES RÉALISATIONS -->
-  <div class="lp-sec"><span class="num">3</span> Autres réalisations</div>
-  <div class="lp-item" onclick="show('r1',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 1</div><div class="lp-sub">[à compléter]</div></div></div>
-  <div class="lp-item" onclick="show('r2',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 2</div><div class="lp-sub">[à compléter]</div></div></div>
-  <div class="lp-item" onclick="show('r3',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 3</div><div class="lp-sub">[à compléter]</div></div></div>
-  <div class="lp-item" onclick="show('r4',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 4</div><div class="lp-sub">[à compléter]</div></div></div>
-  <div class="lp-item" onclick="show('r5',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 5</div><div class="lp-sub">[à compléter]</div></div></div>
-  <div class="lp-item" onclick="show('r6',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 6</div><div class="lp-sub">[à compléter]</div></div></div>
-  <div class="lp-item" onclick="show('r7',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 7</div><div class="lp-sub">[à compléter]</div></div></div>
-  <div class="lp-item" onclick="show('r8',this)"><div class="lp-dot" style="background:#B8B2A8"></div><div><div class="lp-label">Réalisation 8</div><div class="lp-sub">[à compléter]</div></div></div>
 
   <!-- FORMATION -->
   <div class="lp-sec">Formation</div>
@@ -159,7 +160,7 @@
 
   <div id="lb-hint">Cliquez en dehors pour fermer</div>
 </div>
-    <script src="./script.js?v=7"></script>
+    <script src="./script.js?v=9"></script>
 
   </body>
   

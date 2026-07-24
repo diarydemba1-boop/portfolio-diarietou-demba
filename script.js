@@ -14,6 +14,14 @@
    ═══════════════════════════════════════════════════════════ */
 const MODE_EDITION = false;
 
+// ═══ VIGNETTES PDF AUTOMATIQUES (PDF.js) ═══
+// Génère une image d'aperçu de la 1ʳᵉ page de chaque PDF, directement
+// dans le navigateur — pas besoin de faire de capture d'écran toi-même.
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
 // ═══ DONNÉES ═══
 const DATA = {
   // 1 · EXPÉRIENCES PRO
@@ -77,11 +85,13 @@ const DATA = {
       {
         type: 'pdf',
         src: 'assets/pdf/Atlas.pdf',
+        thumb: 'assets/images/Atlas.jpg',
         name: 'Atlas opérationnels automatisés'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/Modeleur Qgis_Script.pdf',
+        thumb: 'assets/images/Modeleur Qgis_Script.jpg',
         name: 'Model Builder et script d’assemblage'
       },
       {
@@ -155,6 +165,7 @@ const DATA = {
     {
       type: 'pdf',
       src: 'assets/pdf/Sebikotane.pdf',
+      thumb: 'assets/images/Sebikotane.jpg',
       name: 'Diagnostic et planification territoriale de Sébikotane'
     }
   ]
@@ -213,6 +224,7 @@ const DATA = {
     {
       type: 'pdf',
       src: 'assets/pdf/HLM.pdf',
+      thumb: 'assets/images/HLM.jpg',
       name: 'Diagnostic territorial de la commune des HLM'
     }
   ]
@@ -343,6 +355,7 @@ const DATA = {
       {
         type: 'pdf',
         src: 'assets/pdf/Adeupa.pdf',
+        thumb: 'assets/images/Adeupa.jpg',
         name: 'Analyse territoriale des données Waze'
       }
     ]
@@ -402,6 +415,7 @@ const DATA = {
       {
         type: 'pdf',
         src: 'assets/pdf/SNCF.pdf',
+        thumb: 'assets/images/SNCF.jpg',
         name: 'Étude prospective — profils et attractivité territoriale'
       }
     ]
@@ -460,6 +474,7 @@ const DATA = {
       {
         type: 'pdf',
         src: 'assets/pdf/Gendarmerie.pdf',
+        thumb: 'assets/images/Gendarmerie.jpg',
         name: 'Atlas départementaux — sélection de planches'
       }
     ]
@@ -533,41 +548,49 @@ const DATA = {
       {
         type: 'pdf',
         src: 'assets/pdf/GTFS.pdf',
+        thumb: 'assets/images/GTFS.png',
         name: 'Tramway et accessibilité urbaine'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/Bivariée.pdf',
+        thumb: 'assets/images/Bivariée.jpg',
         name: 'GES et densité de population'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/Cartes_python.pdf',
+        thumb: 'assets/images/Cartes_python.jpg',
         name: 'FTTH et 5G reproductibles'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/Déformations en fonction du nombre de boulodromes par EPCI.pdf',
+        thumb: 'assets/images/Déformations en fonction du nombre de boulodromes par EPCI.jpg',
         name: 'Équipements sportifs et profils d’âge'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/Atlas cartographique.pdf',
+        thumb: 'assets/images/Atlas cartographique.jpg',
         name: 'Évolution du chômage'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/flux.pdf',
+        thumb: 'assets/images/flux.jpg',
         name: 'Flux domicile-travail'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/niayes.pdf',
+        thumb: 'assets/images/niayes.jpg',
         name: 'Télédétection des Niayes'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/Ventilation_DEMBA_Diariétou_22210680.pdf',
+        thumb: 'assets/images/Ventilation_DEMBA_Diariétou_22210680.jpg',
         name: 'Population et revenus à Nantes'
       }
     ]
@@ -1544,6 +1567,32 @@ function ensureRealisationsGalleryStyle() {
       pointer-events: none;
     }
 
+    .gslot-pdf-fallback {
+      display: none;
+    }
+
+    .gslot-pdf-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: var(--white);
+    }
+
+    .gslot-pdf-canvas.ready ~ .gslot-pdf-fallback {
+      display: none;
+    }
+
+    .gslot.pdf-thumb-error .gslot-pdf-fallback {
+      display: flex;
+    }
+
+    .gslot.pdf-thumb-error .gslot-image-preview,
+    .gslot.pdf-thumb-error .gslot-pdf-canvas {
+      display: none;
+    }
+
     .gslot-pdf-icon {
       font-size: 2.4rem;
       line-height: 1;
@@ -1573,6 +1622,96 @@ function ensureRealisationsGalleryStyle() {
   `;
 
   document.head.appendChild(style);
+}
+
+// ═══ Génération des vignettes PDF (1ʳᵉ page → image), une par une ═══
+const PDF_THUMB_STORAGE_PREFIX = 'pdfThumb::v1::';
+const pdfThumbMemoryCache = new Map();
+let pdfThumbQueue = Promise.resolve();
+
+function getCachedPdfThumb(src) {
+  if (pdfThumbMemoryCache.has(src)) return pdfThumbMemoryCache.get(src);
+
+  try {
+    const cached = localStorage.getItem(PDF_THUMB_STORAGE_PREFIX + src);
+    if (cached) {
+      pdfThumbMemoryCache.set(src, cached);
+      return cached;
+    }
+  } catch (e) {
+    // stockage indisponible (navigation privée, etc.) : pas grave
+  }
+
+  return null;
+}
+
+function setCachedPdfThumb(src, dataUrl) {
+  pdfThumbMemoryCache.set(src, dataUrl);
+  try {
+    localStorage.setItem(PDF_THUMB_STORAGE_PREFIX + src, dataUrl);
+  } catch (e) {
+    // stockage plein ou indisponible : la vignette reste en mémoire pour cette visite
+  }
+}
+
+function renderPdfThumbnail(canvas, src) {
+  pdfThumbQueue = pdfThumbQueue.then(() => new Promise(resolve => {
+    const cached = getCachedPdfThumb(src);
+
+    if (cached) {
+      const img = new Image();
+      img.className = 'gslot-image-preview';
+      img.onload = () => canvas.replaceWith(img);
+      img.onerror = () => canvas.closest('.gslot')?.classList.add('pdf-thumb-error');
+      img.src = cached;
+      resolve();
+      return;
+    }
+
+    if (typeof pdfjsLib === 'undefined') {
+      resolve();
+      return;
+    }
+
+    pdfjsLib.getDocument(src).promise
+      .then(pdf => pdf.getPage(1))
+      .then(page => {
+        const baseViewport = page.getViewport({ scale: 1 });
+        const scale = 420 / baseViewport.width;
+        const viewport = page.getViewport({ scale });
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        return page.render({
+          canvasContext: canvas.getContext('2d'),
+          viewport
+        }).promise.then(() => {
+          canvas.classList.add('ready');
+          try {
+            setCachedPdfThumb(src, canvas.toDataURL('image/jpeg', 0.75));
+          } catch (e) {
+            // export impossible sur certains navigateurs restrictifs : pas grave
+          }
+        });
+      })
+      .catch(() => {
+        canvas.closest('.gslot')?.classList.add('pdf-thumb-error');
+      })
+      .finally(resolve);
+  }));
+}
+
+function initPdfThumbnails(id, d) {
+  if (!Array.isArray(d.imgs)) return;
+
+  d.imgs.forEach((_, i) => {
+    const media = getMedia(id, i);
+    if (media?.type !== 'pdf' || media.thumb) return;
+
+    const canvas = document.getElementById(`pdfc-${id}-${i}`);
+    if (canvas) renderPdfThumbnail(canvas, media.src);
+  });
 }
 
 function getGalleryClass(data) {
@@ -1643,8 +1782,13 @@ function renderGallery(id, d) {
         ${deleteButton}
       `;
     } else if (media?.type === 'pdf') {
+      const previewNode = media.thumb
+        ? `<img class="gslot-image-preview" src="${media.thumb}" alt="${safeTitle}" onerror="this.closest('.gslot')?.classList.add('pdf-thumb-error')">`
+        : `<canvas class="gslot-pdf-canvas" id="pdfc-${id}-${i}"></canvas>`;
+
       content = `
-        <div class="gslot-pdf-placeholder">
+        ${previewNode}
+        <div class="gslot-pdf-placeholder gslot-pdf-fallback">
           <span class="gslot-pdf-icon">📄</span>
           <span class="gslot-pdf-hint">Cliquer pour ouvrir le PDF</span>
         </div>
@@ -1758,6 +1902,8 @@ function show(id, element) {
 
   document.getElementById('rpanel').classList.add('open');
   document.getElementById('frame-right').classList.add('on');
+
+  initPdfThumbnails(id, d);
 
   if (map && d.lat) {
     map.flyTo([d.lat, d.lng], d.zoom || 8, { duration: 1.1 });
