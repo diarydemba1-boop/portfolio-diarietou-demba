@@ -1239,6 +1239,19 @@ function dispatch(){
 function enter(){
   document.getElementById('intro').classList.add('gone');
   initMap();
+
+  const lpanel = document.getElementById('lpanel');
+  if (lpanel) {
+    setTimeout(() => lpanel.classList.add('intro-hint'), 700);
+    setTimeout(dismissLpanelHint, 7000);
+  }
+}
+
+function dismissLpanelHint(){
+  const lpanel = document.getElementById('lpanel');
+  const hint = document.getElementById('lpanel-hint');
+  if (lpanel) lpanel.classList.remove('intro-hint');
+  if (hint) hint.classList.add('hide');
 }
 
 // ═══ MAP ═══
@@ -1819,6 +1832,8 @@ function renderGallery(id, d) {
 }
 
 function show(id, element) {
+  dismissLpanelHint();
+
   if (/^r[1-8]$/.test(id)) id = 'realisations';
 
   const d = DATA[id];
