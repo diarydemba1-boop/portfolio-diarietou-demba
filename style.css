@@ -51,7 +51,8 @@ body { font-family:'IBM Plex Sans',sans-serif; background:var(--ink); color:var(
 .lp-sec .num { color:var(--red); border:1px solid var(--red); border-radius:50%; width:16px; height:16px; display:inline-flex; align-items:center; justify-content:center; font-size:0.5rem; flex-shrink:0; }
 
 .lpanel-hint { margin:0.9rem 1.5rem 0.3rem; padding:0.45rem 0.65rem; border:1px solid var(--red); border-radius:4px; background:var(--red-gl); color:var(--white); font-family:'IBM Plex Mono',monospace; font-size:0.54rem; letter-spacing:0.02em; line-height:1.5; opacity:1; max-height:80px; overflow:hidden; transition:opacity .5s ease, max-height .5s ease, margin .5s ease, padding .5s ease, border-width .5s ease; }
-.lpanel-hint-arrow { color:var(--red); font-weight:700; font-size:0.85em; margin-right:0.15rem; }
+.lpanel-hint-arrow { display:inline-block; color:var(--white); font-weight:700; font-size:0.85em; margin-right:0.15rem; animation:lpanelHintBounce 1s ease-in-out infinite; }
+@keyframes lpanelHintBounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(3px); } }
 .lpanel-hint.hide { opacity:0; max-height:0; margin:0 1.5rem; padding:0 0.65rem; border-width:0; }
 
 @keyframes lpanelPulseGlow { 0%,100% { box-shadow:inset 3px 0 0 0 transparent; } 50% { box-shadow:inset 3px 0 0 0 var(--red); } }
