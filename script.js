@@ -1243,7 +1243,7 @@ function enter(){
   const lpanel = document.getElementById('lpanel');
   if (lpanel) {
     setTimeout(() => lpanel.classList.add('intro-hint'), 700);
-    setTimeout(dismissLpanelHint, 7000);
+    setTimeout(dismissLpanelHint, 12000);
   }
 }
 
