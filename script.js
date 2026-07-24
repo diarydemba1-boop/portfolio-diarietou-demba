@@ -1625,7 +1625,7 @@ function ensureRealisationsGalleryStyle() {
 }
 
 // ═══ Génération des vignettes PDF (1ʳᵉ page → image), une par une ═══
-const PDF_THUMB_STORAGE_PREFIX = 'pdfThumb::v1::';
+const PDF_THUMB_STORAGE_PREFIX = 'pdfThumb::v2::';
 const pdfThumbMemoryCache = new Map();
 let pdfThumbQueue = Promise.resolve();
 
@@ -1677,7 +1677,9 @@ function renderPdfThumbnail(canvas, src) {
       .then(pdf => pdf.getPage(1))
       .then(page => {
         const baseViewport = page.getViewport({ scale: 1 });
-        const scale = 420 / baseViewport.width;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const targetWidth = Math.min(1000, 480 * dpr);
+        const scale = targetWidth / baseViewport.width;
         const viewport = page.getViewport({ scale });
 
         canvas.width = viewport.width;
@@ -1689,7 +1691,7 @@ function renderPdfThumbnail(canvas, src) {
         }).promise.then(() => {
           canvas.classList.add('ready');
           try {
-            setCachedPdfThumb(src, canvas.toDataURL('image/jpeg', 0.75));
+            setCachedPdfThumb(src, canvas.toDataURL('image/jpeg', 0.85));
           } catch (e) {
             // export impossible sur certains navigateurs restrictifs : pas grave
           }
