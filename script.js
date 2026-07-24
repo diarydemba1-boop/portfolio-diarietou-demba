@@ -27,7 +27,7 @@ const DATA = {
   // 1 · EXPÉRIENCES PRO
   sdis: {
     grp: 'exp',
-    color: 'red',
+    color: 'b',
     icon: '🚒',
     lat: 47.47423,
     lng: -0.61439,
@@ -114,7 +114,7 @@ const DATA = {
 
   sebikotane: {
   grp: 'exp',
-  color: 'red',
+  color: 'b',
   icon: '🏛️',
   lat: 14.74285,
   lng: -17.14213,
@@ -173,7 +173,7 @@ const DATA = {
 
   hlm: {
   grp: 'exp',
-  color: 'red',
+  color: 'b',
   icon: '🏛️',
   lat: 14.70490,
   lng: -17.44350,
@@ -1251,7 +1251,10 @@ function dismissLpanelHint(){
   const lpanel = document.getElementById('lpanel');
   const hint = document.getElementById('lpanel-hint');
   if (lpanel) lpanel.classList.remove('intro-hint');
-  if (hint) hint.classList.add('hide');
+  if (hint && !hint.classList.contains('hide')) {
+    hint.classList.add('hide');
+    setTimeout(() => { hint.style.display = 'none'; }, 450);
+  }
 }
 
 // ═══ MAP ═══
@@ -1271,6 +1274,7 @@ function initMap(){
 
 const markerColors = {
   red: '#b41f3a',
+  b: '#3E7CB1',
   u: '#6754b8',
   g: '#267a65'
 };
