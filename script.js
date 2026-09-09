@@ -73,7 +73,7 @@ const DATA = {
       'Fond de carte vectoriel et plans muraux',
       'Atlas opérationnels automatisés',
       'Model Builder et script d’assemblage',
-      'Sectorisation opérationnelle',
+      'Sectorisation opérationnelle dans Lizmap',
       'Isochrones et accessibilité',
       'Engins et WebSIG Lizmap'
     ],
@@ -95,9 +95,9 @@ const DATA = {
         name: 'Model Builder et script d’assemblage'
       },
       {
-        type: 'video',
-        src: 'assets/videos/sectorisation.mp4',
-        name: 'Sectorisation opérationnelle'
+        type: 'pdf',
+        src: 'assets/pdf/Sectorisation.pdf',
+        name: 'Sectorisation opérationnelle dans Lizmap'
       },
       {
         type: 'video',
@@ -751,13 +751,13 @@ const MEDIA_DETAILS = {
   ),
 
   mediaItem(
-    'Centralisation de la sectorisation opérationnelle',
+    'Sectorisation opérationnelle dans Lizmap',
 
-    `Cette démonstration présente l’organisation des informations permettant de connaître le découpage opérationnel du territoire et le rattachement des secteurs aux différents centres d’incendie et de secours.`,
+    `Ce document présente la sectorisation opérationnelle à travers une capture du portail Lizmap associée à la représentation cartographique des secteurs. Il permet de visualiser à la fois l’interface de consultation et l’organisation du découpage opérationnel du territoire.`,
 
-    `La réalisation repose sur la structuration des couches de sectorisation, l’harmonisation de leur représentation et l’organisation des informations nécessaires à leur consultation ainsi qu’à leur mise à jour.`,
+    `Les couches de sectorisation sont préparées et organisées dans QGIS, puis publiées dans Lizmap afin de permettre leur consultation dans une interface web. La représentation cartographique est harmonisée pour faciliter la lecture des différents secteurs.`,
 
-    `La centralisation fournit une référence unique pour comprendre les différents découpages territoriaux et limite la dispersion des informations entre plusieurs supports.`,
+    `Le résultat permet de disposer d’un support unique pour consulter la sectorisation, repérer les différents découpages territoriaux et visualiser leur diffusion dans le WebSIG.`,
 
     [
       'QGIS',
