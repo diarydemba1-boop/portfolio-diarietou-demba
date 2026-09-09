@@ -1251,7 +1251,6 @@ let map, markers={};
 function initMap(){
   if(map) return;
 
-  // Fond de carte sans clé API.
   map=L.map('map',{
     center:[46.6,0],
     zoom:5,
@@ -1260,42 +1259,16 @@ function initMap(){
     worldCopyJump:true
   });
 
+  // CARTO Positron clair, neutre et sans libellés.
+  // La clé API est ajoutée comme paramètre "key".
   L.tileLayer(
-    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    'https://{s}.basemaps.cartocdn.com/rastertiles/light_nolabels/{z}/{x}/{y}.png?key=cb1_2zyq_1_a37f0d6ba09df4d37333ea31',
     {
-      maxZoom:19,
-      attribution:'&copy; OpenStreetMap contributors'
+      subdomains:'abcd',
+      maxZoom:20,
+      attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'
     }
   ).addTo(map);
-
-  // Traitement visuel clair et discret pour rester cohérent
-  // avec le design général du portfolio.
-  if(!document.getElementById('osm-light-basemap-style')){
-    const basemapStyle=document.createElement('style');
-    basemapStyle.id='osm-light-basemap-style';
-    basemapStyle.textContent=`
-      #map .leaflet-tile-pane{
-        filter:
-          grayscale(100%)
-          saturate(25%)
-          contrast(88%)
-          brightness(116%);
-        opacity:.78;
-      }
-
-      #map .leaflet-control-attribution{
-        background:rgba(31,34,36,.82);
-        color:#bdbdbd;
-        font-size:8px;
-        padding:2px 5px;
-      }
-
-      #map .leaflet-control-attribution a{
-        color:#d8d8d8;
-      }
-    `;
-    document.head.appendChild(basemapStyle);
-  }
 
   map.attributionControl.setPrefix(false);
 
