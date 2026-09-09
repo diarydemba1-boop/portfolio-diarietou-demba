@@ -14,20 +14,12 @@
    ═══════════════════════════════════════════════════════════ */
 const MODE_EDITION = false;
 
-// ═══ VIGNETTES PDF AUTOMATIQUES (PDF.js) ═══
-// Génère une image d'aperçu de la 1ʳᵉ page de chaque PDF, directement
-// dans le navigateur — pas besoin de faire de capture d'écran toi-même.
-if (typeof pdfjsLib !== 'undefined') {
-  pdfjsLib.GlobalWorkerOptions.workerSrc =
-    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-}
-
 // ═══ DONNÉES ═══
 const DATA = {
   // 1 · EXPÉRIENCES PRO
   sdis: {
     grp: 'exp',
-    color: 'b',
+    color: 'red',
     icon: '🚒',
     lat: 47.47423,
     lng: -0.61439,
@@ -49,20 +41,30 @@ const DATA = {
 
     tags: [
       {
-        c: 'Logiciels',
-        t: ['QGIS', 'Lizmap', 'GeoConcept']
-      },
-      {
-        c: 'Développement',
-        t: ['Python', 'Model Builder']
+        c: 'Outils',
+        t: [
+          'QGIS',
+          'Lizmap',
+          'ORS Tools',
+          'Python',
+          'QGIS Model Builder'
+        ]
       },
       {
         c: 'Méthodes',
         t: [
-          'Automatisation',
-          'Structuration des données',
+          'Automatisation de traitements',
+          'Atlas automatisé',
           'Analyse de réseau',
-          'WebSIG'
+          'Publication WebSIG'
+        ]
+      },
+      {
+        c: 'Données',
+        t: [
+          'BD TOPO',
+          'Centres de secours',
+          'Référentiel des engins'
         ]
       }
     ],
@@ -85,13 +87,11 @@ const DATA = {
       {
         type: 'pdf',
         src: 'assets/pdf/Atlas.pdf',
-        thumb: 'assets/images/Atlas.jpg',
         name: 'Atlas opérationnels automatisés'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/Modeleur Qgis_Script.pdf',
-        thumb: 'assets/images/Modeleur Qgis_Script.jpg',
         name: 'Model Builder et script d’assemblage'
       },
       {
@@ -114,7 +114,7 @@ const DATA = {
 
   sebikotane: {
   grp: 'exp',
-  color: 'b',
+  color: 'red',
   icon: '🏛️',
   lat: 14.74285,
   lng: -17.14213,
@@ -136,8 +136,12 @@ const DATA = {
 
   tags: [
     {
-      c: 'Logiciels',
-      t: ['QGIS', 'KoboCollect']
+      c: 'Outils',
+      t: [
+        'QGIS',
+        'KoboCollect',
+        'PowerPoint'
+      ]
     },
     {
       c: 'Méthodes',
@@ -149,11 +153,12 @@ const DATA = {
       ]
     },
     {
-      c: 'Production',
+      c: 'Domaines',
       t: [
-        'Cartographie thématique',
-        'Programmation',
-        'Cadre logique'
+        'Aménagement',
+        'Environnement',
+        'Équipements',
+        'Gouvernance locale'
       ]
     }
   ],
@@ -165,7 +170,6 @@ const DATA = {
     {
       type: 'pdf',
       src: 'assets/pdf/Sebikotane.pdf',
-      thumb: 'assets/images/Sebikotane.jpg',
       name: 'Diagnostic et planification territoriale de Sébikotane'
     }
   ]
@@ -173,7 +177,7 @@ const DATA = {
 
   hlm: {
   grp: 'exp',
-  color: 'b',
+  color: 'red',
   icon: '🏛️',
   lat: 14.70490,
   lng: -17.44350,
@@ -195,8 +199,12 @@ const DATA = {
 
   tags: [
     {
-      c: 'Logiciels',
-      t: ['QGIS', 'KoboCollect']
+      c: 'Outils',
+      t: [
+        'QGIS',
+        'KoboCollect',
+        'PowerPoint'
+      ]
     },
     {
       c: 'Méthodes',
@@ -210,9 +218,10 @@ const DATA = {
     {
       c: 'Domaines',
       t: [
-        'Aménagement',
+        'Aménagement urbain',
+        'Services à la population',
         'Économie locale',
-        'Gouvernance territoriale'
+        'Gouvernance locale'
       ]
     }
   ],
@@ -224,7 +233,6 @@ const DATA = {
     {
       type: 'pdf',
       src: 'assets/pdf/HLM.pdf',
-      thumb: 'assets/images/HLM.jpg',
       name: 'Diagnostic territorial de la commune des HLM'
     }
   ]
@@ -254,22 +262,21 @@ const DATA = {
 
     tags: [
       {
+        c: 'Outils',
+        t: [
+          'BigQuery',
+          'n8n',
+          'LangGraph',
+          'Python'
+        ]
+      },
+      {
         c: 'Méthodes',
         t: [
           'Analyse des besoins',
           'Benchmark',
           'Grille multicritère',
-          'Expérimentation'
-        ]
-      },
-      {
-        c: 'Technologies étudiées',
-        t: [
-          'BigQuery',
-          'n8n',
-          'LangGraph',
-          'Python',
-          'Claude Code'
+          'Expérimentation agentique'
         ]
       },
       {
@@ -277,7 +284,8 @@ const DATA = {
         t: [
           'IA agentique',
           'Géomarketing',
-          'Ingénierie des données'
+          'Qualité des données',
+          'Gouvernance des données'
         ]
       }
     ],
@@ -320,15 +328,11 @@ const DATA = {
 
     tags: [
       {
-        c: 'Logiciels',
-        t: ['QGIS', 'R', 'Python']
-      },
-      {
-        c: 'Développement web',
+        c: 'Outils',
         t: [
-          'HTML',
-          'CSS',
-          'JavaScript',
+          'QGIS',
+          'R',
+          'Python',
           'Leaflet',
           'Chart.js'
         ]
@@ -337,14 +341,17 @@ const DATA = {
         c: 'Méthodes',
         t: [
           'Collecte automatisée',
-          'Analyse de trafic',
+          'Analyse spatiale',
           'Analyse temporelle',
-          'Datavisualisation'
+          'Webmapping'
         ]
       },
       {
         c: 'Données',
-        t: ['Waze for Cities', 'BAAC']
+        t: [
+          'Waze for Cities',
+          'BAAC'
+        ]
       }
     ],
     imgs: [
@@ -355,7 +362,6 @@ const DATA = {
       {
         type: 'pdf',
         src: 'assets/pdf/Adeupa.pdf',
-        thumb: 'assets/images/Adeupa.jpg',
         name: 'Analyse territoriale des données Waze'
       }
     ]
@@ -385,25 +391,30 @@ const DATA = {
 
     tags: [
       {
-        c: 'Logiciels',
-        t: ['R', 'QGIS', 'Google Forms']
+        c: 'Outils',
+        t: [
+          'R',
+          'QGIS',
+          'Google Forms'
+        ]
       },
       {
-        c: 'Analyse statistique',
+        c: 'Méthodes',
         t: [
           'Analyse descriptive',
           'ACM',
           'CAH',
-          'Classification'
+          'Classification',
+          'Analyse multicritère',
+          'Pondération'
         ]
       },
       {
-        c: 'Analyse territoriale',
+        c: 'Domaines',
         t: [
-          'Analyse multicritère',
-          'Indicateurs composites',
-          'Prospective',
-          'Mobilités'
+          'Prospective territoriale',
+          'Mobilités',
+          'Attractivité territoriale'
         ]
       }
     ],
@@ -415,7 +426,6 @@ const DATA = {
       {
         type: 'pdf',
         src: 'assets/pdf/SNCF.pdf',
-        thumb: 'assets/images/SNCF.jpg',
         name: 'Étude prospective — profils et attractivité territoriale'
       }
     ]
@@ -445,24 +455,25 @@ const DATA = {
 
     tags: [
       {
-        c: 'Logiciels',
-        t: ['QGIS', 'R', 'SQL']
+        c: 'Outils',
+        t: [
+          'QGIS',
+          'R'
+        ]
       },
       {
         c: 'Méthodes',
         t: [
           'Traitement de données',
           'Cartographie thématique',
-          'Datavisualisation'
+          'Datavisualisation',
+          'Standardisation cartographique'
         ]
       },
       {
-        c: 'Production',
+        c: 'Données',
         t: [
-          'Atlas départemental',
-          'Référentiel commun',
-          'Documentation technique',
-          'Reproductibilité'
+          'Données publiques nationales'
         ]
       }
     ],
@@ -474,7 +485,6 @@ const DATA = {
       {
         type: 'pdf',
         src: 'assets/pdf/Gendarmerie.pdf',
-        thumb: 'assets/images/Gendarmerie.jpg',
         name: 'Atlas départementaux — sélection de planches'
       }
     ]
@@ -508,8 +518,12 @@ const DATA = {
 
     tags: [
       {
-        c: 'Logiciels',
-        t: ['QGIS', 'R', 'Python']
+        c: 'Outils',
+        t: [
+          'QGIS',
+          'R',
+          'Python'
+        ]
       },
       {
         c: 'Méthodes',
@@ -546,51 +560,43 @@ const DATA = {
 
     media: [
       {
-        type: 'pdf',
-        src: 'assets/pdf/GTFS.pdf',
-        thumb: 'assets/images/GTFS.png',
+        type: 'image',
+        src: 'assets/images/GTFS.png',
         name: 'Tramway et accessibilité urbaine'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/Bivariée.pdf',
-        thumb: 'assets/images/Bivariée.jpg',
         name: 'GES et densité de population'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/Cartes_python.pdf',
-        thumb: 'assets/images/Cartes_python.jpg',
         name: 'FTTH et 5G reproductibles'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/Déformations en fonction du nombre de boulodromes par EPCI.pdf',
-        thumb: 'assets/images/Déformations en fonction du nombre de boulodromes par EPCI.jpg',
         name: 'Équipements sportifs et profils d’âge'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/Atlas cartographique.pdf',
-        thumb: 'assets/images/Atlas cartographique.jpg',
         name: 'Évolution du chômage'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/flux.pdf',
-        thumb: 'assets/images/flux.jpg',
         name: 'Flux domicile-travail'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/niayes.pdf',
-        thumb: 'assets/images/niayes.jpg',
         name: 'Télédétection des Niayes'
       },
       {
         type: 'pdf',
         src: 'assets/pdf/Ventilation_DEMBA_Diariétou_22210680.pdf',
-        thumb: 'assets/images/Ventilation_DEMBA_Diariétou_22210680.jpg',
         name: 'Population et revenus à Nantes'
       }
     ]
@@ -738,7 +744,7 @@ const MEDIA_DETAILS = {
       'Chaîne de traitements',
       'Export automatisé',
       'Assemblage de PDF',
-      'Suppression des étapes manuelles sous Excel'
+      'Contrôle de l’ordre des documents'
     ],
 
     []
@@ -761,7 +767,7 @@ const MEDIA_DETAILS = {
     [
       'Structuration des couches',
       'Symbologie catégorisée',
-      'Diffusion WebSIG'
+      'Publication WebSIG'
     ],
 
     [
@@ -920,7 +926,7 @@ const MEDIA_DETAILS = {
 
     `Ce livrable présente une chaîne complète d’exploitation des données Waze for Cities, depuis leur récupération jusqu’à leur analyse et leur visualisation. Il regroupe les principaux résultats dans un document unique et cohérent.`,
 
-    `La présentation réunit la méthode de collecte automatisée des fichiers JSON, leur structuration, les analyses spatiales et temporelles du trafic ainsi que des captures du tableau de bord cartographique développé avec Leaflet et Chart.js.`,
+    `La présentation réunit la méthode de collecte automatisée des données Waze, leur structuration, les analyses spatiales et temporelles du trafic ainsi que des captures du tableau de bord cartographique développé avec Leaflet et Chart.js.`,
 
     `L’ensemble montre comment les données Waze peuvent compléter les sources traditionnelles pour identifier les axes perturbés, analyser les congestions et rendre les résultats accessibles dans une interface interactive reproductible sur d’autres territoires.`,
 
@@ -989,8 +995,7 @@ const MEDIA_DETAILS = {
 
     [
       'QGIS',
-      'R',
-      'SQL'
+      'R'
     ],
 
     [
@@ -1001,7 +1006,7 @@ const MEDIA_DETAILS = {
     ],
 
     [
-      'Données ouvertes nationales'
+      'Données publiques nationales'
     ]
   )
   ],
@@ -1239,30 +1244,61 @@ function dispatch(){
 function enter(){
   document.getElementById('intro').classList.add('gone');
   initMap();
-
-  const lpanel = document.getElementById('lpanel');
-  if (lpanel) {
-    setTimeout(() => lpanel.classList.add('intro-hint'), 700);
-    setTimeout(dismissLpanelHint, 12000);
-  }
-}
-
-function dismissLpanelHint(){
-  const lpanel = document.getElementById('lpanel');
-  const hint = document.getElementById('lpanel-hint');
-  if (lpanel) lpanel.classList.remove('intro-hint');
-  if (hint && !hint.classList.contains('hide')) {
-    hint.classList.add('hide');
-    setTimeout(() => { hint.style.display = 'none'; }, 450);
-  }
 }
 
 // ═══ MAP ═══
 let map, markers={};
 function initMap(){
   if(map) return;
-  map=L.map('map',{center:[46.6,0],zoom:5,zoomControl:false,attributionControl:false,worldCopyJump:true});
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{maxZoom:19}).addTo(map);
+
+  // Fond de carte sans clé API.
+  map=L.map('map',{
+    center:[46.6,0],
+    zoom:5,
+    zoomControl:false,
+    attributionControl:true,
+    worldCopyJump:true
+  });
+
+  L.tileLayer(
+    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      maxZoom:19,
+      attribution:'&copy; OpenStreetMap contributors'
+    }
+  ).addTo(map);
+
+  // Traitement visuel clair et discret pour rester cohérent
+  // avec le design général du portfolio.
+  if(!document.getElementById('osm-light-basemap-style')){
+    const basemapStyle=document.createElement('style');
+    basemapStyle.id='osm-light-basemap-style';
+    basemapStyle.textContent=`
+      #map .leaflet-tile-pane{
+        filter:
+          grayscale(100%)
+          saturate(25%)
+          contrast(88%)
+          brightness(116%);
+        opacity:.78;
+      }
+
+      #map .leaflet-control-attribution{
+        background:rgba(31,34,36,.82);
+        color:#bdbdbd;
+        font-size:8px;
+        padding:2px 5px;
+      }
+
+      #map .leaflet-control-attribution a{
+        color:#d8d8d8;
+      }
+    `;
+    document.head.appendChild(basemapStyle);
+  }
+
+  map.attributionControl.setPrefix(false);
+
   map.on('mousemove',e=>{
     const la=e.latlng.lat.toFixed(3),ln=e.latlng.lng.toFixed(3);
     document.getElementById('hud-lat').textContent=(la>0?la+'°N':Math.abs(la)+'°S');
@@ -1274,7 +1310,6 @@ function initMap(){
 
 const markerColors = {
   red: '#b41f3a',
-  b: '#3E7CB1',
   u: '#6754b8',
   g: '#267a65'
 };
@@ -1565,64 +1600,6 @@ function ensureRealisationsGalleryStyle() {
       display: flex;
     }
 
-    .gslot-pdf-placeholder {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 0.5rem;
-      background:
-        linear-gradient(
-          135deg,
-          rgba(17, 19, 21, 0.96),
-          rgba(37, 41, 45, 0.94)
-        );
-      color: var(--white);
-      text-align: center;
-      pointer-events: none;
-    }
-
-    .gslot-pdf-fallback {
-      display: none;
-    }
-
-    .gslot-pdf-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: var(--white);
-    }
-
-    .gslot-pdf-canvas.ready ~ .gslot-pdf-fallback {
-      display: none;
-    }
-
-    .gslot.pdf-thumb-error .gslot-pdf-fallback {
-      display: flex;
-    }
-
-    .gslot.pdf-thumb-error .gslot-image-preview,
-    .gslot.pdf-thumb-error .gslot-pdf-canvas {
-      display: none;
-    }
-
-    .gslot-pdf-icon {
-      font-size: 2.4rem;
-      line-height: 1;
-    }
-
-    .gslot-pdf-hint {
-      font-family: 'IBM Plex Mono', monospace;
-      max-width: 200px;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      color: var(--mist);
-    }
-
     @media (max-width: 760px) {
       .rp-gal-one,
       .rp-gal-two,
@@ -1639,98 +1616,6 @@ function ensureRealisationsGalleryStyle() {
   `;
 
   document.head.appendChild(style);
-}
-
-// ═══ Génération des vignettes PDF (1ʳᵉ page → image), une par une ═══
-const PDF_THUMB_STORAGE_PREFIX = 'pdfThumb::v2::';
-const pdfThumbMemoryCache = new Map();
-let pdfThumbQueue = Promise.resolve();
-
-function getCachedPdfThumb(src) {
-  if (pdfThumbMemoryCache.has(src)) return pdfThumbMemoryCache.get(src);
-
-  try {
-    const cached = localStorage.getItem(PDF_THUMB_STORAGE_PREFIX + src);
-    if (cached) {
-      pdfThumbMemoryCache.set(src, cached);
-      return cached;
-    }
-  } catch (e) {
-    // stockage indisponible (navigation privée, etc.) : pas grave
-  }
-
-  return null;
-}
-
-function setCachedPdfThumb(src, dataUrl) {
-  pdfThumbMemoryCache.set(src, dataUrl);
-  try {
-    localStorage.setItem(PDF_THUMB_STORAGE_PREFIX + src, dataUrl);
-  } catch (e) {
-    // stockage plein ou indisponible : la vignette reste en mémoire pour cette visite
-  }
-}
-
-function renderPdfThumbnail(canvas, src) {
-  pdfThumbQueue = pdfThumbQueue.then(() => new Promise(resolve => {
-    const cached = getCachedPdfThumb(src);
-
-    if (cached) {
-      const img = new Image();
-      img.className = 'gslot-image-preview';
-      img.onload = () => canvas.replaceWith(img);
-      img.onerror = () => canvas.closest('.gslot')?.classList.add('pdf-thumb-error');
-      img.src = cached;
-      resolve();
-      return;
-    }
-
-    if (typeof pdfjsLib === 'undefined') {
-      resolve();
-      return;
-    }
-
-    pdfjsLib.getDocument(src).promise
-      .then(pdf => pdf.getPage(1))
-      .then(page => {
-        const baseViewport = page.getViewport({ scale: 1 });
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const targetWidth = Math.min(1000, 480 * dpr);
-        const scale = targetWidth / baseViewport.width;
-        const viewport = page.getViewport({ scale });
-
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-
-        return page.render({
-          canvasContext: canvas.getContext('2d'),
-          viewport
-        }).promise.then(() => {
-          canvas.classList.add('ready');
-          try {
-            setCachedPdfThumb(src, canvas.toDataURL('image/jpeg', 0.85));
-          } catch (e) {
-            // export impossible sur certains navigateurs restrictifs : pas grave
-          }
-        });
-      })
-      .catch(() => {
-        canvas.closest('.gslot')?.classList.add('pdf-thumb-error');
-      })
-      .finally(resolve);
-  }));
-}
-
-function initPdfThumbnails(id, d) {
-  if (!Array.isArray(d.imgs)) return;
-
-  d.imgs.forEach((_, i) => {
-    const media = getMedia(id, i);
-    if (media?.type !== 'pdf' || media.thumb) return;
-
-    const canvas = document.getElementById(`pdfc-${id}-${i}`);
-    if (canvas) renderPdfThumbnail(canvas, media.src);
-  });
 }
 
 function getGalleryClass(data) {
@@ -1801,16 +1686,13 @@ function renderGallery(id, d) {
         ${deleteButton}
       `;
     } else if (media?.type === 'pdf') {
-      const previewNode = media.thumb
-        ? `<img class="gslot-image-preview" src="${media.thumb}" alt="${safeTitle}" onerror="this.closest('.gslot')?.classList.add('pdf-thumb-error')">`
-        : `<canvas class="gslot-pdf-canvas" id="pdfc-${id}-${i}"></canvas>`;
-
       content = `
-        ${previewNode}
-        <div class="gslot-pdf-placeholder gslot-pdf-fallback">
-          <span class="gslot-pdf-icon">📄</span>
-          <span class="gslot-pdf-hint">Cliquer pour ouvrir le PDF</span>
-        </div>
+        <iframe
+          class="gslot-pdf-preview"
+          src="${media.src}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0"
+          title="Aperçu de ${safeTitle}"
+          tabindex="-1"
+        ></iframe>
         <button class="gslot-media-click" type="button" aria-label="Ouvrir ${safeTitle}" onclick="openMedia('${id}',${i})"></button>
         <div class="gslot-type-badge">PDF</div>
         <div class="gslot-badge">${safeTitle}</div>
@@ -1836,8 +1718,6 @@ function renderGallery(id, d) {
 }
 
 function show(id, element) {
-  dismissLpanelHint();
-
   if (/^r[1-8]$/.test(id)) id = 'realisations';
 
   const d = DATA[id];
@@ -1915,7 +1795,7 @@ function show(id, element) {
     ${renderGallery(id, d)}
 
     <div class="rp-hr"></div>
-    <span class="rp-lbl">Outils et méthodes</span>
+    <span class="rp-lbl">Outils, méthodes et ressources</span>
     ${tags}
 
     <a href="mailto:dembadiarietou@gmail.com" class="rp-btn">Contacter Diariétou →</a>
@@ -1923,8 +1803,6 @@ function show(id, element) {
 
   document.getElementById('rpanel').classList.add('open');
   document.getElementById('frame-right').classList.add('on');
-
-  initPdfThumbnails(id, d);
 
   if (map && d.lat) {
     map.flyTo([d.lat, d.lng], d.zoom || 8, { duration: 1.1 });
@@ -3139,8 +3017,66 @@ function ensureResizableProjectPanel() {
   restoreStoredWidth();
 }
 
+
+function normalizeVisibleProjectMetadata() {
+  function updateMenuItem(
+    id,
+    labelText,
+    subText
+  ) {
+    const item = [
+      ...document.querySelectorAll(
+        '.lp-item'
+      )
+    ].find(node => {
+      const action =
+        node.getAttribute('onclick') ||
+        '';
+
+      return action.includes(
+        `'${id}'`
+      );
+    });
+
+    if (!item) return;
+
+    const label =
+      item.querySelector('.lp-label');
+
+    const sub =
+      item.querySelector('.lp-sub');
+
+    if (label && labelText) {
+      label.textContent = labelText;
+    }
+
+    if (sub && subText) {
+      sub.textContent = subText;
+    }
+  }
+
+  updateMenuItem(
+    'sebikotane',
+    'Stage — Mairie de Sébikotane',
+    'Géomaticienne · Sénégal · 2021'
+  );
+
+  updateMenuItem(
+    'hlm',
+    'Stage — Commune des HLM',
+    'Géomaticienne · Dakar · 2020'
+  );
+
+  updateMenuItem(
+    'publicis',
+    'Publicis Connected Media',
+    'IA et géomarketing · Rennes · 2025–2026'
+  );
+}
+
 function initializePortfolioUI() {
   normalizeRealisationsMenu();
+  normalizeVisibleProjectMetadata();
   ensureRealisationsGalleryStyle();
   ensureMediaDescriptionUI();
   ensureResizableProjectPanel();
