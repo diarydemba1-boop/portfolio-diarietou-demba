@@ -1607,6 +1607,11 @@ function getGalleryClass(data) {
   return 'rp-gal rp-gal-grid';
 }
 
+function freshMediaUrl(src) {
+  const separator = src.includes('?') ? '&' : '?';
+  return `${src}${separator}v=${Date.now()}`;
+}
+
 function renderGallery(id, d) {
   ensureRealisationsGalleryStyle();
   const galleryClass = getGalleryClass(d);
@@ -1659,10 +1664,12 @@ function renderGallery(id, d) {
         ${deleteButton}
       `;
     } else if (media?.type === 'pdf') {
+      const freshPdfSrc = freshMediaUrl(media.src);
+
       content = `
         <iframe
           class="gslot-pdf-preview"
-          src="${media.src}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0"
+          src="${freshPdfSrc}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0"
           title="Aperçu de ${safeTitle}"
           tabindex="-1"
         ></iframe>
@@ -2608,8 +2615,10 @@ function openMedia(id, i) {
   }
 
   if (media.type === 'pdf') {
+    const freshPdfSrc = freshMediaUrl(media.src);
+
     pdf.src =
-      media.src +
+      freshPdfSrc +
       '#toolbar=1&navpanes=0&scrollbar=1';
 
     pdf.style.display = 'block';
