@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   ⚙️  INTERRUPTEUR PRINCIPAL
+   ⚙️  INTERRUPTEUR PRINCIPAl
    ───────────────────────────────────────────────────────────
    MODE_EDITION = true   →  Tu remplis ton portfolio.
                             Les boutons ＋ (ajouter) et ✕ (supprimer)
