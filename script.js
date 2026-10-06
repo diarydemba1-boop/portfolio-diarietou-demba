@@ -560,8 +560,8 @@ const DATA = {
 
     media: [
       {
-        type: 'image',
-        src: 'assets/images/GTFS.png',
+        type: 'pdf',
+        src: 'assets/pdf/GTFS.pdf',
         name: 'Tramway et accessibilité urbaine'
       },
       {
